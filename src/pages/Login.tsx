@@ -3,7 +3,7 @@ import {
     IonContent, IonIcon, IonText, IonItem, IonInput, IonCard, IonCardHeader, IonCardTitle,
     IonCardSubtitle, IonCardContent, IonLabel, IonSegment, IonSegmentButton, IonButton, IonList
 } from '@ionic/react';
-import { schoolSharp, mailSharp, lockClosed, eye, eyeOff, arrowForwardOutline, person } from 'ionicons/icons';
+import { schoolSharp, mailSharp, lockClosed, eye, eyeOff, arrowForwardOutline, person, checkmarkCircleSharp } from 'ionicons/icons';
 
 import './Login.css';
 
@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                 <IonIcon icon={lockClosed} slot="start" />
                 <IonInput
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder="Minimo 8 caracteres"
                     value={password}
                     onIonInput={(e) => setPassword(e.detail.value!)}
                 />
@@ -89,10 +89,10 @@ const Login: React.FC = () => {
             </IonItem>
             <span className="label">CONFIRMAR CONTRASEÑA</span>
             <IonItem className="input-item" lines="none">
-                <IonIcon icon={lockClosed} slot="start" />
+                <IonIcon icon={checkmarkCircleSharp} slot="start" />
                 <IonInput
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="••••••••"
+                    placeholder="Repite tu contraseña"
                     value={confirmPassword}
                     onIonInput={(e) => setConfirmPassword(e.detail.value!)}
                 />
