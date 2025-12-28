@@ -1,0 +1,190 @@
+.rideCardNoImage {
+    background: #1C2127;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Header */
+.rideCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rideCardTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--ion-color-dark);
+}
+
+.rideCardTimeBadge {
+    background: var(--ion-color-primary);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Sección de ruta */
+.rideCardRouteSection {
+    background: var(--ion-color-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.rideCardRoutePoints {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.rideCardPoint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rideCardPointDotStart {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ion-color-primary);
+}
+
+.rideCardPointDotEnd {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--ion-color-success);
+}
+
+.rideCardPointName {
+    font-weight: 600;
+    color: var(--ion-color-dark);
+}
+
+.rideCardRouteIcon {
+    color: var(--ion-color-medium);
+    font-size: 20px;
+}
+
+.rideCardRouteLine {
+    height: 4px;
+    background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-success));
+    border-radius: 2px;
+}
+
+/* Información del conductor */
+.rideCardDriverInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--ion-color-light-shade);
+}
+
+.rideCardDriverAvatar {
+    width: 3em;
+    height: 3em;
+}
+
+.rideCardDriverDetails {
+    padding-bottom: 1em;
+    flex: 1;
+}
+
+.rideCardDriverHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.rideCardDriverName {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ion-color-dark);
+}
+
+.rideCardVehicleInfo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--ion-color-light);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.rideCardVehicleIcon {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+}
+
+.rideCardVehicleText {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+}
+
+.rideCardDriverRating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rideCardRatingStars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rideCardStarIcon {
+    color: #fbbf24;
+    font-size: 14px;
+}
+
+.rideCardRatingText {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+}
+
+.rideCardTripCount {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+}
+
+/* Footer con precio y botón */
+.rideCardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rideCardPrice {
+    text-align: right;
+}
+
+.rideCardPriceLabel {
+    font-size: 12px;
+    color: var(--ion-color-medium);
+    margin-bottom: 2px;
+}
+
+.rideCardPriceValue {
+    font-size: 20px;
+}
+
+.rideCardPriceUnit {
+    font-size: 14px;
+}
+
+.rideCardActionButton {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+}
