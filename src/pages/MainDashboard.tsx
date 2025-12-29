@@ -1,6 +1,5 @@
 import React from 'react';
 import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
 
 import { Route, Redirect } from 'react-router';
 
@@ -11,34 +10,32 @@ import UserProfile from './UserProfile';
 
 function MainDashboard() {
   return (
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Redirect exact path="/" to="/home" />
+    <IonTabs>
+      <IonRouterOutlet>
+        <Redirect exact path="/maindashboard" to="/maindashboard/home" />
 
-          <Route path="/home" render={() => <HomePage />} exact={true} />
-          <Route path="/trips" render={() => <HomePage />} exact={true} />
-          <Route path="/profile" render={() => <UserProfile />} exact={true} />
-        </IonRouterOutlet>
+        <Route path="/maindashboard/home" render={() => <HomePage />} exact={true} />
+        <Route path="/maindashboard/trips" render={() => <HomePage />} exact={true} />
+        <Route path="/maindashboard/profile" render={() => <HomePage />} exact={true} />
+      </IonRouterOutlet>
 
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon icon={homeSharp} />
-            <IonLabel>Inicio</IonLabel>
-          </IonTabButton>
+      <IonTabBar slot="bottom">
+        <IonTabButton tab="home" href="/maindashboard/home">
+          <IonIcon icon={homeSharp} />
+          <IonLabel>Inicio</IonLabel>
+        </IonTabButton>
 
-          <IonTabButton tab="trips" href="/trips">
-            <IonIcon icon={carSharp} />
-            <IonLabel>Mis viajes</IonLabel>
-          </IonTabButton>
+        <IonTabButton tab="trips" href="/maindashboard/trips">
+          <IonIcon icon={carSharp} />
+          <IonLabel>Mis viajes</IonLabel>
+        </IonTabButton>
 
-          <IonTabButton tab="profile" href="/profile">
-            <IonIcon icon={personSharp} />
-            <IonLabel>Perfil</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
+        <IonTabButton tab="profile" href="/maindashboard/profile">
+          <IonIcon icon={personSharp} />
+          <IonLabel>Perfil</IonLabel>
+        </IonTabButton>
+      </IonTabBar>
+    </IonTabs>
   );
 }
 export default MainDashboard;
