@@ -49,7 +49,11 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <Dashboard />
+      <IonRouterOutlet>
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/maindashboard" component={Dashboard} />
+        <Redirect exact from="/" to="/login" />
+      </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
 );

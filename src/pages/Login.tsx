@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
     IonContent, IonIcon, IonText, IonItem, IonInput, IonCard, IonCardHeader, IonCardTitle,
-    IonCardSubtitle, IonCardContent, IonLabel, IonSegment, IonSegmentButton, IonButton, IonList
+    IonCardSubtitle, IonCardContent, IonLabel, IonSegment, IonSegmentButton, IonButton, useIonRouter
 } from '@ionic/react';
 import { schoolSharp, mailSharp, lockClosed, eye, eyeOff, arrowForwardOutline, person, checkmarkCircleSharp } from 'ionicons/icons';
 
 import './Login.css';
+import Authentication from '../functions/authentication';
 
 const Login: React.FC = () => {
     const [selectedSegment, setSelectedSegment] = useState<string>('default');
@@ -13,6 +14,11 @@ const Login: React.FC = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [name, setName] = useState<string>('');
+
+    const auth = new Authentication();
+    const router = useIonRouter();
 
     const handleSegmentChange = (event: CustomEvent) => {
         setSelectedSegment(event.detail.value);
@@ -20,6 +26,42 @@ const Login: React.FC = () => {
         setConfirmPassword('');  // Reset confirm password
         setShowPassword(false);  // Reset showPassword to hidden
         setShowConfirmPassword(false);  // Reset showConfirmPassword to hidden
+        setEmail('');  // Reset email
+        setName('');  // Reset name
+    };
+
+    const reset = () => {
+        setSelectedSegment('default');
+        setPassword('');
+        setConfirmPassword('');
+        setShowPassword(false);
+        setShowConfirmPassword(false);
+        setEmail('');
+        setName('');
+    };
+
+    const handleLogin = async () => {
+        try {
+            await auth.login(email, password);
+            alert("Inicio de sesión exitoso.");
+            router.push('/maindashboard'); // Redirigir a MainDashboard
+        } catch (error: any) {
+            alert(error.message);
+        }
+    };
+
+    const handleRegister = async () => {
+        if (password !== confirmPassword) {
+            alert("Las contraseñas no coinciden.");
+            return;
+        }
+        try {
+            await auth.register({ name, email, password });
+            alert("Registro exitoso. Ahora puedes iniciar sesión.");
+            reset();
+        } catch (error: any) {
+            alert(error.message);
+        }
     };
 
     const loginForm = (
@@ -30,6 +72,8 @@ const Login: React.FC = () => {
                 <IonInput
                     type="email"
                     placeholder="email@espol.edu.ec"
+                    value={email}
+                    onIonInput={(e) => setEmail(e.detail.value!)}
                 />
             </IonItem>
 
@@ -49,7 +93,7 @@ const Login: React.FC = () => {
 
             <span className="forgot-password">¿Olvidaste tu contraseña?</span>
 
-            <IonButton className="continue-button" expand="block">
+            <IonButton className="continue-button" expand="block" onClick={handleLogin}>
                 Continuar
                 <IonIcon slot="end" icon={arrowForwardOutline} />
             </IonButton>
@@ -64,6 +108,8 @@ const Login: React.FC = () => {
                 <IonInput
                     type="text"
                     placeholder="Ej. Juan Perez"
+                    value={name}
+                    onIonInput={(e) => setName(e.detail.value!)}
                 />
             </IonItem>
             <span className="label">CORREO INSTITUCIONAL</span>
@@ -72,6 +118,8 @@ const Login: React.FC = () => {
                 <IonInput
                     type="email"
                     placeholder="email@espol.edu.ec"
+                    value={email}
+                    onIonInput={(e) => setEmail(e.detail.value!)}
                 />
             </IonItem>
             <span className="label">CONTRASEÑA</span>
@@ -101,7 +149,7 @@ const Login: React.FC = () => {
                 </IonButton>
             </IonItem>
 
-            <IonButton className="continue-button" expand="block">
+            <IonButton className="continue-button" expand="block" onClick={handleRegister}>
                 Registrarse
                 <IonIcon slot="end" icon={arrowForwardOutline} />
             </IonButton>
