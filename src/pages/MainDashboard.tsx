@@ -26,12 +26,12 @@ function MainDashboard() {
             <IonLabel>Inicio</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="trips" href="/radio">
+          <IonTabButton tab="trips" href="/trips">
             <IonIcon icon={carSharp} />
             <IonLabel>Mis viajes</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="profile" href="/library">
+          <IonTabButton tab="profile" href="/profile">
             <IonIcon icon={personSharp} />
             <IonLabel>Perfil</IonLabel>
           </IonTabButton>

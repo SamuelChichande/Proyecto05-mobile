@@ -129,7 +129,7 @@ const Login: React.FC = () => {
                     </IonCardHeader>
 
                     <IonCardContent>
-                        {selectedSegment === 'default' ? registerForm : loginForm}
+                        {selectedSegment === 'default' ? loginForm : registerForm}
                     </IonCardContent>
 
                 </IonCard>
