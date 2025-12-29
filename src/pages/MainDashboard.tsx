@@ -7,6 +7,7 @@ import { Route, Redirect } from 'react-router';
 import { homeSharp, carSharp, personSharp } from 'ionicons/icons';
 
 import HomePage from './HomePage';
+import UserProfile from './UserProfile';
 
 function MainDashboard() {
   return (
@@ -17,7 +18,7 @@ function MainDashboard() {
 
           <Route path="/home" render={() => <HomePage />} exact={true} />
           <Route path="/trips" render={() => <HomePage />} exact={true} />
-          <Route path="/profile" render={() => <HomePage />} exact={true} />
+          <Route path="/profile" render={() => <UserProfile />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
@@ -26,12 +27,12 @@ function MainDashboard() {
             <IonLabel>Inicio</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="trips" href="/radio">
+          <IonTabButton tab="trips" href="/trips">
             <IonIcon icon={carSharp} />
             <IonLabel>Mis viajes</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="profile" href="/library">
+          <IonTabButton tab="profile" href="/profile">
             <IonIcon icon={personSharp} />
             <IonLabel>Perfil</IonLabel>
           </IonTabButton>
