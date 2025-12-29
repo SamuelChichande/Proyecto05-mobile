@@ -1,0 +1,154 @@
+/* Variables de color */
+:root {
+  --ion-background-color: #f6f7f8;
+}
+
+.dark {
+  --ion-background-color: #101922;
+  --ion-item-background: #1c2630;
+}
+
+/* Header de Perfil */
+.profile-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid var(--ion-item-background, #fff);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--ion-item-background, #fff);
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.star-icon {
+  color: #f1c40f;
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #8a8a8e;
+  margin-top: 4px;
+}
+
+/* Preferencias */
+.pref-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.pref-tag {
+  background: var(--ion-item-background, #fff);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.add-pref-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(19, 127, 236, 0.1);
+  color: #137fec;
+  font-size: 1.2rem;
+}
+
+/* Iconos de colores en listas */
+.icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.blue { background: rgba(19, 127, 236, 0.15); color: #137fec; }
+.green { background: rgba(46, 204, 113, 0.15); color: #2ecc71; }
+.purple { background: rgba(155, 89, 182, 0.15); color: #9b59b6; }
+.gray { background: rgba(142, 142, 147, 0.15); color: #8e8e93; }
+
+/* Estilos de Lista */
+.section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #8a8a8e;
+  margin-left: 20px;
+  margin-bottom: 8px;
+}
+
+.custom-list {
+  background: transparent !important;
+  margin-bottom: 20px !important;
+}
+
+.footer-actions {
+  margin-top: 30px;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido horizontalmente */
+}
+
+.logout-btn {
+  /* Eliminamos el ancho 100% y definimos uno fijo o basado en contenido */
+  width: 160px; 
+  font-weight: 700;
+  --color: #eb445a;
+  --background: rgba(235, 68, 90, 0.1); /* Opcional: un fondo suave */
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.version-text {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #8a8a8e;
+  margin-bottom: 40px;
+}
+
+.active-tab {
+  color: #137fec;
+}

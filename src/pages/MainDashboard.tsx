@@ -6,6 +6,7 @@ import { Route, Redirect } from 'react-router';
 import { homeSharp, carSharp, personSharp } from 'ionicons/icons';
 
 import HomePage from './HomePage';
+import UserProfile from './UserProfile';
 
 function MainDashboard() {
   return (
