@@ -14,9 +14,13 @@ function MainDashboard() {
       <IonRouterOutlet>
         <Redirect exact path="/maindashboard" to="/maindashboard/home" />
 
-        <Route path="/maindashboard/home" render={() => <HomePage />} exact={true} />
-        <Route path="/maindashboard/trips" render={() => <HomePage />} exact={true} />
-        <Route path="/maindashboard/profile" render={() => <HomePage />} exact={true} />
+        <Route exact path="/maindashboard/home" component={HomePage} />
+        <Route exact path="/maindashboard/trips" component={HomePage} />
+        <Route exact path="/maindashboard/profile" component={UserProfile} />
+
+        <Route exact path="/maindashboard">
+          <Redirect to="/maindashboard/home" />
+        </Route>
       </IonRouterOutlet>
 
       <IonTabBar slot="bottom">
