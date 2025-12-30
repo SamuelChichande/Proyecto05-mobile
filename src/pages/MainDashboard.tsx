@@ -7,6 +7,7 @@ import { homeSharp, carSharp, personSharp } from 'ionicons/icons';
 
 import HomePage from './HomePage';
 import UserProfile from './UserProfile';
+import TripDetails from '../components/TripDetails';
 
 function MainDashboard() {
   return (
@@ -18,6 +19,7 @@ function MainDashboard() {
         <Route exact path="/maindashboard/trips" component={HomePage} />
         <Route exact path="/maindashboard/profile" component={UserProfile} />
 
+        <Route exact path="/maindashboard/trip-details" component={TripDetails} />
         <Route exact path="/maindashboard">
           <Redirect to="/maindashboard/home" />
         </Route>
