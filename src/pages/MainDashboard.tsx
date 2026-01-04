@@ -9,6 +9,7 @@ import HomePage from './HomePage';
 import UserProfile from './UserProfile';
 import MyTravels from './MyTravels';
 import TripDetails from '../components/TripDetails';
+import CreateTrip from './CreateTrip';
 
 function MainDashboard() {
   return (
@@ -21,6 +22,7 @@ function MainDashboard() {
         <Route exact path="/maindashboard/profile" component={UserProfile} />
 
         <Route exact path="/maindashboard/trip-details" component={TripDetails} />
+        <Route exact path="/maindashboard/create-trip" component={CreateTrip} />
         <Route exact path="/maindashboard">
           <Redirect to="/maindashboard/home" />
         </Route>

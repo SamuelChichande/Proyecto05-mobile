@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   IonPage,
   IonHeader,
@@ -13,8 +14,7 @@ import {
   IonCard,
   IonCardContent,
   IonChip,
-  IonAvatar,
-  IonAlert
+  IonAvatar
 } from '@ionic/react';
 import {
   arrowBackOutline,
@@ -33,7 +33,7 @@ import './MyTravels.css';
 
 const MyTravels: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState<'upcoming' | 'past'>('upcoming');
-  const [showAlert, setShowAlert] = useState(false);
+  const history = useHistory();
 
   const passengers = [
     { id: 1, name: 'Sarah', photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDwaQrRtv4JSbcGwwIWzKQAorkiXac1961En5uBRwaccKw5v7avmvqA-YklBoFRYZO39P-wDpgUz7C37iV6sOoQL41xpJ-s1M9-tT3rnJ7zyA2eGCOeEsVU0xGgluwLAFte6pS6h7gA38XvGs7e2PpQUaglyikTBUXtqyMBsvLlUN7DRSLXjh9AgEqHTeHR14XTLKzEUi1RTGfOAK5oUChVB9TSWXcswaPhXxfIrKhOl5krd-A5C3DdMaqTqYOA9M6pO3wmO0Fqlg2_' },
@@ -42,16 +42,13 @@ const MyTravels: React.FC = () => {
 
   const handleCreateTrip = () => {
     // Navegar a la pantalla de crear viaje
-    setShowAlert(true);
+    history.push('/maindashboard/create-trip');
   };
 
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar className="my-trips-toolbar">
-          <IonButton fill="clear" slot="start" className="back-button">
-            <IonIcon slot="icon-only" icon={arrowBackOutline} />
-          </IonButton>
           
           <IonTitle className="my-trips-title">Mis Viajes</IonTitle>
           
@@ -202,7 +199,7 @@ const MyTravels: React.FC = () => {
                   <IonButton fill="clear" className="chat-btn">
                     <IonIcon icon={chatbubbleOutline} />
                   </IonButton>
-                  <IonButton className="details-btn">
+                  <IonButton className="details-btn" onClick={() => history.push('/maindashboard/trip-details')}>
                     Detalles
                   </IonButton>
                 </div>
@@ -240,26 +237,6 @@ const MyTravels: React.FC = () => {
           Publicar Viaje
         </IonButton>
       </div>
-
-      <IonAlert
-        isOpen={showAlert}
-        onDidDismiss={() => setShowAlert(false)}
-        header="Crear Viaje"
-        message="Esta función te llevará a la pantalla de crear un nuevo viaje."
-        buttons={[
-          {
-            text: 'Cancelar',
-            role: 'cancel'
-          },
-          {
-            text: 'Continuar',
-            handler: () => {
-              // Aquí iría la navegación a la pantalla de crear viaje
-              console.log('Navegar a crear viaje');
-            }
-          }
-        ]}
-      />
     </IonPage>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   IonPage,
   IonHeader,
@@ -17,9 +18,9 @@ import {
   IonChip,
   IonAlert
 } from '@ionic/react';
-import { 
-  closeOutline, 
-  locationOutline, 
+import {
+  closeOutline,
+  locationOutline,
   calendarOutline,
   timeOutline,
   peopleOutline,
@@ -42,46 +43,34 @@ const CreateTrip: React.FC = () => {
   const [origin, setOrigin] = useState('Madrid, España');
   const [destination, setDestination] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  
+  const history = useHistory();
+
   const handleDecreaseSeats = () => {
     if (seats > 1) setSeats(seats - 1);
   };
-  
+
   const handleIncreaseSeats = () => {
     if (seats < 8) setSeats(seats + 1);
   };
-  
+
   const handlePublish = () => {
     setShowAlert(true);
   };
-  
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar className="create-trip-toolbar">
-          <IonButton fill="clear" slot="start" className="close-button">
+          <IonButton fill="clear" slot="start" className="close-button" onClick={() => history.goBack()}>
             <IonIcon slot="icon-only" icon={closeOutline} />
           </IonButton>
-          
+
           <IonTitle className="create-trip-title">Publicar viaje</IonTitle>
-          
-          <IonButton fill="clear" slot="end" className="help-button">
-            <span>Ayuda</span>
-          </IonButton>
+
         </IonToolbar>
       </IonHeader>
-      
+
       <IonContent className="create-trip-content">
-        {/* Mapa decorativo */}
-        <div className="map-background">
-          <div className="map-overlay"></div>
-          <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6B-XGuNR8YqB4JPyhppCskoMNYEA3f4F2j7moXQBPtDV5ydz5j_r4pe7Bafggpay0GV3eLS8LNFda-27APNcsBKxYUS5VHrB5Bl681U7GAQvyDQXWAKnsdxk3zoHXHXqMHLiWoSKy3lwTbIM-0qxHATqBsDKSziDlun5uW6T6iupopDIci_9z7Vyy_efop7GqnJ12lTBcd97o8bo47r8Ptn3lkSdCv4I5ZghthmhOZlDiX4XONjjTQghhqviPisWVY0MvfMVwpRBU"
-            alt="Mapa minimalista de calles de la ciudad"
-            className="map-image"
-          />
-        </div>
-        
         {/* Formulario */}
         <div className="form-container">
           {/* Grupo de ruta */}
@@ -101,12 +90,12 @@ const CreateTrip: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             {/* Línea conectora */}
             <div className="route-connector">
               <div className="connector-line"></div>
             </div>
-            
+
             {/* Destino */}
             <div className="route-item">
               <div className="route-icon">
@@ -123,7 +112,7 @@ const CreateTrip: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Fecha y Hora */}
           <IonGrid className="datetime-grid">
             <IonRow>
@@ -141,7 +130,7 @@ const CreateTrip: React.FC = () => {
                   />
                 </div>
               </IonCol>
-              
+
               <IonCol>
                 <div className="datetime-card">
                   <div className="datetime-header">
@@ -158,7 +147,7 @@ const CreateTrip: React.FC = () => {
               </IonCol>
             </IonRow>
           </IonGrid>
-          
+
           {/* Plazas disponibles */}
           <div className="seats-card">
             <div className="seats-header">
@@ -167,21 +156,21 @@ const CreateTrip: React.FC = () => {
               </div>
               <span className="seats-label">Plazas disponibles</span>
             </div>
-            
+
             <div className="seats-control">
-              <IonButton 
-                fill="clear" 
+              <IonButton
+                fill="clear"
                 className="seats-button"
                 onClick={handleDecreaseSeats}
                 disabled={seats <= 1}
               >
                 <IonIcon icon={removeOutline} />
               </IonButton>
-              
+
               <span className="seats-count">{seats}</span>
-              
-              <IonButton 
-                fill="clear" 
+
+              <IonButton
+                fill="clear"
                 className="seats-button"
                 onClick={handleIncreaseSeats}
                 disabled={seats >= 8}
@@ -190,14 +179,14 @@ const CreateTrip: React.FC = () => {
               </IonButton>
             </div>
           </div>
-          
+
           {/* Precio */}
           <div className="price-card">
             <IonLabel className="price-label">Precio por pasajero</IonLabel>
-            
+
             <div className="price-input-container">
               <IonIcon icon={trendingDownOutline} className="price-currency" />
-              
+
               <IonInput
                 type="number"
                 className="price-input"
@@ -205,48 +194,32 @@ const CreateTrip: React.FC = () => {
                 value={price}
                 onIonChange={(e) => setPrice(e.detail.value!)}
               />
-              
+
               <div className="price-recommended">
                 <IonIcon icon={trendingDownOutline} className="recommended-icon" />
                 <span>Recomendado</span>
               </div>
             </div>
-            
+
             <p className="price-suggestion">Precio sugerido: 15.00€ - 20.00€</p>
           </div>
-          
-          {/* Opciones adicionales */}
-          <div className="options-container">
-            <IonChip className="option-chip">
-              <IonIcon icon={pawOutline} />
-              <span>Mascotas</span>
-            </IonChip>
-            
-            <IonChip className="option-chip">
-              <IonIcon icon={bagOutline} />
-              <span>Equipaje Grande</span>
-            </IonChip>
-            
-            <IonChip className="option-chip">
-              <IonIcon icon={banOutline} />
-              <span>No fumar</span>
-            </IonChip>
-          </div>
+
         </div>
-        
-        {/* Botón flotante */}
-        <div className="fab-container">
-          <IonButton 
-            className="publish-button"
-            expand="block"
-            onClick={handlePublish}
-          >
-            <span>Publicar Viaje</span>
-            <IonIcon icon={arrowForwardOutline} />
-          </IonButton>
-        </div>
+        {/* Botón fijo */}
+        <IonButton
+          className="publish-button"
+          expand="block"
+          onClick={handlePublish}
+        >
+          <span>Publicar Viaje</span>
+          <IonIcon icon={arrowForwardOutline} />
+        </IonButton>
+
+
       </IonContent>
-      
+
+
+
       <IonAlert
         isOpen={showAlert}
         onDidDismiss={() => setShowAlert(false)}

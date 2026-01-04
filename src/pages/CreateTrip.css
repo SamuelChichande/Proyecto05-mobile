@@ -44,37 +44,11 @@
   font-size: 1rem;
 }
 
-/* Mapa decorativo */
-.map-background {
-  width: 100%;
-  height: 160px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.map-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent, var(--background-dark));
-  z-index: 10;
-}
-
-.map-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.2;
-  mix-blend-mode: overlay;
-}
-
 /* Contenedor del formulario */
 .form-container {
   padding: 0 16px;
-  margin-top: -64px;
   position: relative;
   z-index: 20;
-  padding-bottom: 128px;
 }
 
 /* Tarjeta de ruta */
@@ -382,21 +356,10 @@
   font-size: 18px;
 }
 
-/* Botón flotante */
-.fab-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  background: linear-gradient(to top, var(--background-dark), transparent);
-  z-index: 40;
-  max-width: 480px;
-  margin: 0 auto;
-  padding-top: 48px;
-}
-
+/* Botón fijo */
 .publish-button {
+  padding: 0 1em;
+  margin-bottom: 1em;
   width: 100%;
   height: 56px;
   --background: var(--primary);
