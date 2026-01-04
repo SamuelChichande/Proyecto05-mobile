@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     IonContent, IonIcon, IonItem, IonAvatar,
     IonLabel, IonList, IonPage
@@ -10,10 +10,18 @@ import RideCard from '../components/RideCard';
 import QuickActions from '../components/QuickActions';
 
 const HomePage: React.FC = () => {
-    const userName = "Alex";
+    const [userName, setUserName] = useState<string>("Usuario");
+
+    useEffect(() => {
+        const storedName = localStorage.getItem('userName');
+        if (storedName) {
+            const firstName = storedName.split(' ')[0];
+            setUserName(firstName);
+        }
+    }, []);
 
     return (
-        <IonPage> {/* AGREGADO: Obligatorio para que la vista cambie */}
+        <IonPage>
             <IonContent className="ion-padding">
                 <IonList inset={true} style={{ 'background': 'transparent', 'margin': '0' }}>
                     <IonItem className="welcome-item">
@@ -28,6 +36,7 @@ const HomePage: React.FC = () => {
                                 BIENVENIDO
                             </sub>
                             <IonLabel className="welcome-title">
+                                {/* 3. Usamos la variable de estado aquí */}
                                 Hola, {userName}
                             </IonLabel>
                         </div>

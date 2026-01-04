@@ -42,9 +42,13 @@ const Login: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            await auth.login(email, password);
-            alert("Inicio de sesión exitoso.");
-            router.push('/maindashboard'); // Redirigir a MainDashboard
+            const result = await auth.login(email, password);
+            if (result.status === 'success') {
+                localStorage.setItem('userName', result.user.name);
+
+                alert("Inicio de sesión exitoso.");
+                router.push('/maindashboard', 'forward');
+            }
         } catch (error: any) {
             alert(error.message);
         }
