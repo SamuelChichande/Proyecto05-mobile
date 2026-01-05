@@ -12,20 +12,22 @@ import {
 } from 'ionicons/icons';
 import './RideCard.css';
 
-const RideCard = () => {
+interface Trip {
+    title: string;
+    timeTravel: string;
+    startPoint: string;
+    endPoint: string;
+    driverName: string;
+    vehicle: string;
+    rating: string;
+    tripCount: string;
+    priceValue: string;
+    priceUnit: string;
+}
+
+const RideCard: React.FC<{ trip: Trip }> = ({ trip }) => {
     // 1. Inicializamos el router de Ionic
     const router = useIonRouter();
-
-    const title = "HOY, 14:30 PM";
-    const timeTravel = "En 30 min";
-    const startPoint = "Universidad";
-    const endPoint = "Centro";
-    const driverName = "Maria G.";
-    const vehicle = "Toyota Prius";
-    const rating = "4.9";
-    const tripCount = "(120 viajes)";
-    const priceValue = "$15";
-    const priceUnit = ".00";
 
     // 2. Definimos la función de navegación
     const handleViewDetails = () => {
@@ -38,9 +40,9 @@ const RideCard = () => {
             {/* Header */}
             <div className="rideCardHeader">
                 <div>
-                    <h3 className="rideCardTitle">{title}</h3>
+                    <h3 className="rideCardTitle">{trip.title}</h3>
                 </div>
-                <div className="rideCardTimeBadge">{timeTravel}</div>
+                <div className="rideCardTimeBadge">{trip.timeTravel}</div>
             </div>
 
             {/* Ruta */}
@@ -48,14 +50,14 @@ const RideCard = () => {
                 <div className="rideCardRoutePoints">
                     <div className="rideCardPoint">
                         <div className="rideCardPointDotStart"></div>
-                        <span className="rideCardPointName">{startPoint}</span>
+                        <span className="rideCardPointName">{trip.startPoint}</span>
                     </div>
 
                     <IonIcon icon={navigate} className="rideCardRouteIcon" />
 
                     <div className="rideCardPoint">
                         <div className="rideCardPointDotEnd"></div>
-                        <span className="rideCardPointName">{endPoint}</span>
+                        <span className="rideCardPointName">{trip.endPoint}</span>
                     </div>
                 </div>
                 <div className="rideCardRouteLine"></div>
@@ -69,10 +71,10 @@ const RideCard = () => {
 
                 <div className="rideCardDriverDetails">
                     <div className="rideCardDriverHeader">
-                        <h4 className="rideCardDriverName">{driverName}</h4>
+                        <h4 className="rideCardDriverName">{trip.driverName}</h4>
                         <div className="rideCardVehicleInfo">
                             <IonIcon icon={car} className="rideCardVehicleIcon" />
-                            <span className="rideCardVehicleText">{vehicle}</span>
+                            <span className="rideCardVehicleText">{trip.vehicle}</span>
                         </div>
                     </div>
 
@@ -82,8 +84,8 @@ const RideCard = () => {
                                 <IonIcon key={index} icon={star} className="rideCardStarIcon" />
                             ))}
                         </div>
-                        <span className="rideCardRatingText">{rating}</span>
-                        <span className="rideCardTripCount">{tripCount}</span>
+                        <span className="rideCardRatingText">{trip.rating}</span>
+                        <span className="rideCardTripCount">{trip.tripCount}</span>
                     </div>
                 </div>
             </div>
@@ -102,8 +104,8 @@ const RideCard = () => {
                 <div className="rideCardPrice">
                     <p className="rideCardPriceLabel">Precio estimado</p>
                     <div>
-                        <span className="rideCardPriceValue">{priceValue}</span>
-                        <span className="rideCardPriceUnit">{priceUnit}</span>
+                        <span className="rideCardPriceValue">{trip.priceValue}</span>
+                        <span className="rideCardPriceUnit">{trip.priceUnit}</span>
                     </div>
                 </div>
             </div>

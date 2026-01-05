@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   IonContent, IonHeader, IonPage, IonToolbar, IonTitle, IonButtons, 
   IonButton, IonIcon, IonBadge, IonList, IonItem, 
-  IonLabel, IonToggle 
+  IonLabel, IonToggle, useIonRouter
 } from '@ionic/react';
 import { 
   chevronBackOutline, createOutline, checkmarkCircle, star, 
@@ -14,6 +14,7 @@ import {
 import './UserProfile.css';
 
 const UserProfile: React.FC = () => {
+  const router = useIonRouter();
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -122,7 +123,7 @@ const UserProfile: React.FC = () => {
 
               <div className="footer-actions">
                   {/* Quitamos expand="block" para que respete el ancho del CSS */}
-                  <IonButton fill="clear" color="danger" className="logout-btn">
+                  <IonButton fill="clear" color="danger" className="logout-btn" onClick={() => router.push('/maindashboard/login')}>
                       Cerrar Sesión
                   </IonButton>
                   <p className="version-text">Versión 2.4.0 (Build 102)</p>
