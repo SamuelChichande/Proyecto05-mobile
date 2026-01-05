@@ -12,24 +12,34 @@ import {
 } from 'ionicons/icons';
 import './RideCard.css';
 
-const RideCard = () => {
-    // 1. Inicializamos el router de Ionic
+interface Trip {
+    title: string;
+    timeTravel: string;
+    startPoint: string;
+    endPoint: string;
+    driverName: string;
+    vehicle: string;
+    rating: string;
+    tripCount: string;
+    priceValue: string;
+    priceUnit: string;
+}
+
+const RideCard = ({ trip }: { trip: Trip }) => {
     const router = useIonRouter();
 
-    const title = "HOY, 14:30 PM";
-    const timeTravel = "En 30 min";
-    const startPoint = "Universidad";
-    const endPoint = "Centro";
-    const driverName = "Maria G.";
-    const vehicle = "Toyota Prius";
-    const rating = "4.9";
-    const tripCount = "(120 viajes)";
-    const priceValue = "$15";
-    const priceUnit = ".00";
+    const title = trip.title;
+    const timeTravel = trip.timeTravel;
+    const startPoint = trip.startPoint;
+    const endPoint = trip.endPoint;
+    const driverName = trip.driverName;
+    const vehicle = trip.vehicle;
+    const rating = trip.rating;
+    const tripCount = trip.tripCount;
+    const priceValue = "$" + trip.priceValue;
+    const priceUnit = "." + trip.priceUnit;
 
-    // 2. Definimos la función de navegación
     const handleViewDetails = () => {
-        // Navega a la ruta que definimos en MainDashboard
         router.push('/maindashboard/trip-details', 'forward', 'push');
     };
 

@@ -1,16 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import {
     IonContent, IonIcon, IonItem, IonAvatar,
-    IonLabel, IonList, IonPage
+    IonLabel, IonList, IonPage, useIonRouter, IonButton
 } from '@ionic/react';
-import { notifications } from 'ionicons/icons';
+import { notifications, car } from 'ionicons/icons';
 
 import './HomePage.css';
 import RideCard from '../components/RideCard';
 import QuickActions from '../components/QuickActions';
 
+interface Trip {
+    title: string;
+    timeTravel: string;
+    startPoint: string;
+    endPoint: string;
+    driverName: string;
+    vehicle: string;
+    rating: string;
+    tripCount: string;
+    priceValue: string;
+    priceUnit: string;
+}
+
 const HomePage: React.FC = () => {
+    const router = useIonRouter();
+    
     const [userName, setUserName] = useState<string>("Usuario");
+    const [idUser, setIdUser] = useState<string>("");
+    const [nextTrip, setNextTrip] = useState<Trip | null>(null);
 
     useEffect(() => {
         const storedName = localStorage.getItem('userName');
@@ -50,7 +67,17 @@ const HomePage: React.FC = () => {
                 </IonList>
                 <div className="dashboard-container">
                     <h3>Tu Próximo Viaje</h3>
-                    <RideCard />
+                    {nextTrip ? (
+                        <RideCard trip={nextTrip} />
+                    ) : (
+                        <div className="no-trips-message">
+                            <IonIcon icon={car} size="large" color="medium" />
+                            <h4>No tiene viajes establecidos</h4>
+                            <IonButton fill="outline" onClick={() => router.push('/maindashboard/create-trip')}>
+                                Crear un viaje
+                            </IonButton>
+                        </div>
+                    )}
                     <h3>Accesos Rápidos</h3>
                     <QuickActions />
                 </div>

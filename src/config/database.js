@@ -47,4 +47,37 @@ let getUsers = async () => {
         });
 };
 
-export { saveUser, getUsers };
+let saveTrip = async (origin, destination, date, time, seats, price, userId) => {
+    const tripRef = ref(database, "trips/");
+    const newTripRef = push(tripRef);
+
+    return set(newTripRef, {
+        origin,
+        destination,
+        date,
+        time,
+        seats,
+        price,
+        userId
+    })
+        .then(() => ({ status: "success", message: "Trip saved successfully." }))
+        .catch(error => ({ status: "error", message: error?.message || String(error) }));
+}
+
+let getTrips = async () => {
+    const dbRef = ref(getDatabase());
+    return get(child(dbRef, `trips/`))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                return { status: "success", data: snapshot.val() };
+            } else {
+                return { status: "empty", message: "No hay datos" };
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting trips:", error);
+            return { status: "error", message: error?.message || String(error) };
+        });
+}
+
+export { saveUser, getUsers, saveTrip, getTrips };

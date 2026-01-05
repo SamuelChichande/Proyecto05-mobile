@@ -7,6 +7,8 @@ import { schoolSharp, mailSharp, lockClosed, eye, eyeOff, arrowForwardOutline, p
 
 import './Login.css';
 import Authentication from '../functions/authentication';
+// @ts-ignore
+import { getUsers } from '../config/database';
 
 const Login: React.FC = () => {
     const [selectedSegment, setSelectedSegment] = useState<string>('default');
@@ -45,6 +47,19 @@ const Login: React.FC = () => {
             const result = await auth.login(email, password);
             if (result.status === 'success') {
                 localStorage.setItem('userName', result.user.name);
+
+                //Guardar idUser en el localStorage
+                const usersResult = await getUsers();
+                if (usersResult.status === 'success') {
+                    const users = usersResult.data;
+                    for (const userId in users) {
+                        const user = users[userId];
+                        if (user.address === email && user.password === password) {
+                            localStorage.setItem('idUser', userId);
+                            break;
+                        }
+                    }
+                }
 
                 alert("Inicio de sesión exitoso.");
                 router.push('/maindashboard', 'forward');

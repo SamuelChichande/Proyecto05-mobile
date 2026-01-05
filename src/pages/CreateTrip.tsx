@@ -34,6 +34,8 @@ import {
   trendingDownOutline
 } from 'ionicons/icons';
 import './CreateTrip.css';
+// @ts-ignore
+import { saveTrip } from '../config/database';
 
 const CreateTrip: React.FC = () => {
   const [seats, setSeats] = useState(3);
@@ -44,6 +46,7 @@ const CreateTrip: React.FC = () => {
   const [destination, setDestination] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
+  const storedId = localStorage.getItem('idUser');
 
   const handleDecreaseSeats = () => {
     if (seats > 1) setSeats(seats - 1);
@@ -53,8 +56,27 @@ const CreateTrip: React.FC = () => {
     if (seats < 8) setSeats(seats + 1);
   };
 
-  const handlePublish = () => {
+  const handlePublish = async (idUser: String) => {
+    try {
+      const result = await saveTrip(origin, destination, date, time, seats, price, idUser);
+      if (result.status != 'success') {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      alert('No se pudo publicar el viaje. Inténtalo de nuevo más tarde.');
+      return;
+    }
+    resetForm();
     setShowAlert(true);
+  };
+
+  const resetForm = () => {
+    setOrigin('');
+    setDestination('');
+    setDate('2023-10-25');
+    setTime('08:30');
+    setSeats(3);
+    setPrice('');
   };
 
   return (
@@ -209,7 +231,7 @@ const CreateTrip: React.FC = () => {
         <IonButton
           className="publish-button"
           expand="block"
-          onClick={handlePublish}
+          onClick={() => handlePublish(storedId!)}
         >
           <span>Publicar Viaje</span>
           <IonIcon icon={arrowForwardOutline} />
