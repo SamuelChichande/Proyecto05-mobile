@@ -45,7 +45,10 @@ class Authentication {
                 for (const userId in users) {
                     const user = users[userId];
                     if (user.address === email && user.password === password) {
-                        return { status: 'success', user: user };
+                        return {
+                            status: 'success',
+                            user: { ...user, id: userId }
+                        };
                     }
                 }
                 throw new Error('Credenciales incorrectas');

@@ -47,4 +47,19 @@ let getUsers = async () => {
         });
 };
 
-export { saveUser, getUsers };
+let getTrips = async () => {
+    const dbRef = ref(getDatabase());
+    return get(child(dbRef, `trips/`))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                return { status: "success", data: snapshot.val() };
+            } else {
+                return { status: "empty", message: "No hay viajes disponibles" };
+            }
+        })
+        .catch((error) => {
+            return { status: "error", message: error.message };
+        });
+};
+
+export { saveUser, getUsers, getTrips };
