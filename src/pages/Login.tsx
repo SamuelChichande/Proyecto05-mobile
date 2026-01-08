@@ -41,18 +41,19 @@ const Login: React.FC = () => {
     };
 
     const handleLogin = async () => {
-        try {
-            const result = await auth.login(email, password);
-            if (result.status === 'success') {
-                localStorage.setItem('userName', result.user.name);
+    try {
+        const result = await auth.login(email, password);
+        if (result.status === 'success') {
+            localStorage.setItem('userName', result.user.name);
+            localStorage.setItem('userId', result.user.id || result.user.userId); 
 
-                alert("Inicio de sesión exitoso.");
-                router.push('/maindashboard', 'forward');
-            }
-        } catch (error: any) {
-            alert(error.message);
+            alert("Inicio de sesión exitoso.");
+            router.push('/maindashboard', 'forward');
         }
-    };
+    } catch (error: any) {
+        alert(error.message);
+    }
+};
 
     const handleRegister = async () => {
         if (password !== confirmPassword) {
