@@ -7,6 +7,8 @@ import { schoolSharp, mailSharp, lockClosed, eye, eyeOff, arrowForwardOutline, p
 
 import './Login.css';
 import Authentication from '../functions/authentication';
+// @ts-ignore
+import { getUsers } from '../config/database';
 
 const Login: React.FC = () => {
     const [selectedSegment, setSelectedSegment] = useState<string>('default');
@@ -41,14 +43,29 @@ const Login: React.FC = () => {
     };
 
     const handleLogin = async () => {
-    try {
-        const result = await auth.login(email, password);
-        if (result.status === 'success') {
-            localStorage.setItem('userName', result.user.name);
-            localStorage.setItem('userId', result.user.id || result.user.userId); 
+        try {
+            const result = await auth.login(email, password);
+            if (result.status === 'success') {
+                localStorage.setItem('userName', result.user.name);
 
-            alert("Inicio de sesión exitoso.");
-            router.push('/maindashboard', 'forward');
+                //Guardar idUser en el localStorage
+                const usersResult = await getUsers();
+                if (usersResult.status === 'success') {
+                    const users = usersResult.data;
+                    for (const userId in users) {
+                        const user = users[userId];
+                        if (user.address === email && user.password === password) {
+                            localStorage.setItem('idUser', userId);
+                            break;
+                        }
+                    }
+                }
+
+                alert("Inicio de sesión exitoso.");
+                router.push('/maindashboard', 'forward');
+            }
+        } catch (error: any) {
+            alert(error.message);
         }
     } catch (error: any) {
         alert(error.message);
@@ -61,7 +78,7 @@ const Login: React.FC = () => {
             return;
         }
         try {
-            await auth.register({ name, email, password });
+            await auth.register({ name, email, password, rating: "0.0", tripCount: "0 viajes" });
             alert("Registro exitoso. Ahora puedes iniciar sesión.");
             reset();
         } catch (error: any) {

@@ -147,11 +147,6 @@
     font-size: 14px;
 }
 
-.rideCardRatingText {
-    font-size: 12px;
-    color: var(--ion-color-medium);
-}
-
 .rideCardTripCount {
     font-size: 12px;
     color: var(--ion-color-medium);

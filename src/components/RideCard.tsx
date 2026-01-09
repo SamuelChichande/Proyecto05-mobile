@@ -8,28 +8,40 @@ import {
 import {
     navigate,
     star,
-    car
+    car,
+    starOutline,
+    starHalf
 } from 'ionicons/icons';
 import './RideCard.css';
 
-const RideCard = () => {
-    // 1. Inicializamos el router de Ionic
+interface Trip {
+    title: string;
+    timeTravel: string;
+    startPoint: string;
+    endPoint: string;
+    driverName: string;
+    vehicle: string;
+    rating: string;
+    tripCount: string;
+    priceValue: string;
+    priceUnit: string;
+}
+
+const RideCard = ({ trip }: { trip: Trip }) => {
     const router = useIonRouter();
 
-    const title = "HOY, 14:30 PM";
-    const timeTravel = "En 30 min";
-    const startPoint = "Universidad";
-    const endPoint = "Centro";
-    const driverName = "Maria G.";
-    const vehicle = "Toyota Prius";
-    const rating = "4.9";
-    const tripCount = "(120 viajes)";
-    const priceValue = "$15";
-    const priceUnit = ".00";
+    const title = trip.title; //"HOY, 14:30PM"
+    const timeTravel = trip.timeTravel; //"30min"
+    const startPoint = trip.startPoint; //"Campus ESPOL"
+    const endPoint = trip.endPoint; //"Centro Comercial El Dorado"
+    const driverName = trip.driverName; //"Juan Perez"
+    const vehicle = trip.vehicle; //"Toyota Corolla - ABC-1234"
+    const rating = trip.rating; //"4.8"
+    const tripCount = trip.tripCount; //"120 viajes"
+    const priceValue = "$" + trip.priceValue; //"5.00"
+    const priceUnit = "." + trip.priceUnit; //"00"
 
-    // 2. Definimos la función de navegación
     const handleViewDetails = () => {
-        // Navega a la ruta que definimos en MainDashboard
         router.push('/maindashboard/trip-details', 'forward', 'push');
     };
 
@@ -78,11 +90,27 @@ const RideCard = () => {
 
                     <div className="rideCardDriverRating">
                         <div className="rideCardRatingStars">
-                            {[1, 2, 3, 4, 5].map((index) => (
-                                <IonIcon key={index} icon={star} className="rideCardStarIcon" />
-                            ))}
+                            {[1, 2, 3, 4, 5].map((index) => {
+                                let iconName = starOutline;
+
+                                if (index <= Math.floor(parseFloat(trip.rating))) {
+                                    // Estrella completa
+                                    iconName = star;
+                                } else if (index - 0.5 <= parseFloat(trip.rating)) {
+                                    // Media estrella
+                                    iconName = starHalf;
+                                }
+                                // Si no, queda starOutline (vacía)
+
+                                return (
+                                    <IonIcon
+                                        key={index}
+                                        icon={iconName}
+                                        className={`rideCardStarIcon ${iconName !== starOutline ? 'filled' : ''}`}
+                                    />
+                                );
+                            })}
                         </div>
-                        <span className="rideCardRatingText">{rating}</span>
                         <span className="rideCardTripCount">{tripCount}</span>
                     </div>
                 </div>

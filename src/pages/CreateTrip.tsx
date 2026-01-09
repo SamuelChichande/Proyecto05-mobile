@@ -16,7 +16,8 @@ import {
   IonCol,
   IonToggle,
   IonChip,
-  IonAlert
+  IonAlert,
+  IonList
 } from '@ionic/react';
 import {
   closeOutline,
@@ -31,20 +32,143 @@ import {
   banOutline,
   arrowForwardOutline,
   helpOutline,
-  trendingDownOutline
+  trendingDownOutline,
+  carSharp
 } from 'ionicons/icons';
 import './CreateTrip.css';
+// @ts-ignore
+import { saveTrip } from '../config/database';
 
 const CreateTrip: React.FC = () => {
-  const [seats, setSeats] = useState(3);
-  const [price, setPrice] = useState('');
-  const [date, setDate] = useState('2023-10-25');
-  const [time, setTime] = useState('08:30');
-  const [origin, setOrigin] = useState('Madrid, España');
-  const [destination, setDestination] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
-  const history = useHistory();
+  // 1. Estados (useState)
+  const [seats, setSeats] = useState(3); // Plazas disponibles
+  const [price, setPrice] = useState(''); // Precio por pasajero
+  const [date, setDate] = useState('2023-10-25'); // Fecha del viaje
+  const [car, setCar] = useState(''); // Tipo de vehículo
+  const [time, setTime] = useState('08:30'); // Hora del viaje
+  const [origin, setOrigin] = useState(''); // Lugar de origen
+  const [destination, setDestination] = useState(''); // Lugar de destino
+  const [showAlert, setShowAlert] = useState(false); // Alerta de viaje publicado
+  const [originPredictions, setOriginPredictions] = useState<any[]>([]); // Sugerencias de origen
+  const [destinationPredictions, setDestinationPredictions] = useState<any[]>([]); // Sugerencias de destino
+  const [timeTravel, setTimeTravel] = useState<string>(''); // Duración del viaje
+  const [distanceKm, setDistanceKm] = useState<string>(''); // Distancia en km
+  const [googleReady, setGoogleReady] = useState(false); // Estado para verificar si Google Maps está cargado
 
+  let formatTime = '';
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+  const autocompleteServiceRef = React.useRef<any>(null);
+  const history = useHistory();
+  const storedId = localStorage.getItem('idUser');
+  const loadGoogleMapsScript = () => {
+    if ((window as any).google) {
+      setGoogleReady(true);
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+      setGoogleReady(true);
+    };
+
+    document.body.appendChild(script);
+  };
+
+
+  // 2. Hooks (useEffect)
+  React.useEffect(() => {
+    loadGoogleMapsScript();
+  }, []);
+
+  React.useEffect(() => {
+    if (googleReady && !autocompleteServiceRef.current) {
+      autocompleteServiceRef.current =
+        new (window as any).google.maps.places.AutocompleteService();
+    }
+  }, [googleReady]);
+
+  // 3. Funciones auxiliares (AQUÍ VA LA PARTE 4)
+  const resetForm = () => {
+    setOrigin('');
+    setDestination('');
+    setDate('2023-10-25');
+    setTime('08:30');
+    setSeats(3);
+    setPrice('');
+    setCar('');
+    setTimeTravel('');
+    setDistanceKm('');
+  };
+
+  const formatTimeForDisplay = (time24h: string) => {
+    if (!time24h) return "";
+    
+    const [hours, minutes] = time24h.split(':');
+    const hour = parseInt(hours, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    
+    return `${hour12}:${minutes} ${ampm}`;
+};
+
+  const getPredictions = (
+    value: string,
+    setter: React.Dispatch<React.SetStateAction<any[]>>
+  ) => {
+    if (!value || !autocompleteServiceRef.current) {
+      setter([]);
+      return;
+    }
+
+    autocompleteServiceRef.current.getPlacePredictions(
+      {
+        input: value,
+        componentRestrictions: { country: 'es' }, // o 'ec'
+        types: ['geocode']
+      },
+      (results: any[]) => {
+        setter(results || []);
+      }
+    );
+  };
+
+  const calculateTimeTravel = (origin: string, destination: string) => {
+    if (!(window as any).google) return;
+
+    const service = new (window as any).google.maps.DistanceMatrixService();
+
+    service.getDistanceMatrix(
+      {
+        origins: [origin],
+        destinations: [destination],
+        travelMode: 'DRIVING',
+        unitSystem: (window as any).google.maps.UnitSystem.METRIC,
+      },
+      (response: any, status: string) => {
+        if (status !== 'OK') {
+          console.error('Error Distance Matrix:', status);
+          return;
+        }
+
+        const element = response.rows[0].elements[0];
+
+        if (element.status === 'OK') {
+          setTimeTravel(element.duration.text);   // ej: "1 h 15 min"
+          setDistanceKm(element.distance.text);   // ej: "420 km"
+
+          console.log('Duration:', element.duration.text);
+          console.log('Distance:', element.distance.text);
+        }
+      }
+    );
+  };
+
+
+  // 4. Handlers existentes (publish, seats, etc.)
   const handleDecreaseSeats = () => {
     if (seats > 1) setSeats(seats - 1);
   };
@@ -53,7 +177,22 @@ const CreateTrip: React.FC = () => {
     if (seats < 8) setSeats(seats + 1);
   };
 
-  const handlePublish = () => {
+  const handlePublish = async (idUser: String) => {
+    if (!origin || !destination || !date || !time || !seats || !price || !car || !idUser || !timeTravel) {
+      alert('Por favor, completa todos los campos.');
+      return;
+    }
+
+    try {
+      const result = await saveTrip(origin, destination, date, formatTime, timeTravel, seats, car, price, idUser);
+      if (result.status != 'success') {
+        throw new Error(result.message);
+      }
+    } catch (error) {
+      alert('No se pudo publicar el viaje. Inténtalo de nuevo más tarde.');
+      return;
+    }
+    resetForm();
     setShowAlert(true);
   };
 
@@ -86,10 +225,37 @@ const CreateTrip: React.FC = () => {
                   className="route-input-field"
                   placeholder="¿De dónde sales?"
                   value={origin}
-                  onIonChange={(e) => setOrigin(e.detail.value!)}
+                  onIonChange={(e) => {
+                    const value = e.detail.value!;
+                    setOrigin(value);
+                    getPredictions(value, setOriginPredictions);
+                  }}
                 />
               </div>
             </div>
+
+            {originPredictions.length > 0 && (
+              <IonList className="autocomplete-list">
+                {originPredictions.map((p) => (
+                  <IonItem
+                    key={p.place_id}
+                    button
+                    onClick={() => {
+                      setOrigin(p.description);
+                      setOriginPredictions([]);
+
+                      if (destination) {
+                        calculateTimeTravel(p.description, destination);
+                      }
+
+                    }}
+                  >
+                    {p.description}
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
+
 
             {/* Línea conectora */}
             <div className="route-connector">
@@ -107,11 +273,38 @@ const CreateTrip: React.FC = () => {
                   className="route-input-field"
                   placeholder="¿A dónde vas?"
                   value={destination}
-                  onIonChange={(e) => setDestination(e.detail.value!)}
+                  onIonChange={(e) => {
+                    const value = e.detail.value!;
+                    setDestination(value);
+                    getPredictions(value, setDestinationPredictions);
+                  }}
                 />
               </div>
             </div>
+
+            {destinationPredictions.length > 0 && (
+              <IonList className="autocomplete-list">
+                {destinationPredictions.map((p) => (
+                  <IonItem
+                    key={p.place_id}
+                    button
+                    onClick={() => {
+                      setDestination(p.description);
+                      setDestinationPredictions([]);
+
+                      if (origin) {
+                        calculateTimeTravel(origin, p.description);
+                      }
+
+                    }}
+                  >
+                    {p.description}
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
           </div>
+
 
           {/* Fecha y Hora */}
           <IonGrid className="datetime-grid">
@@ -126,7 +319,10 @@ const CreateTrip: React.FC = () => {
                     type="date"
                     className="datetime-input"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={(e) => {
+                      setDate(e.target.value);
+                      formatTime = formatTimeForDisplay(e.target.value);
+                    }}
                   />
                 </div>
               </IonCol>
@@ -180,6 +376,22 @@ const CreateTrip: React.FC = () => {
             </div>
           </div>
 
+          {/* Tipo de vehiculo */}
+          <div className="typecar-card">
+            <div className="datetime-header">
+              <IonIcon icon={carSharp} />
+              <span>TIPO DE VEHICULO</span>
+            </div>
+            <input
+              type="text"
+              placeholder='Toyota Corolla - ABC-1234'
+              className="typecar-input"
+              value={car}
+              onChange={(e) => setCar(e.target.value)}
+            />
+          </div>
+
+
           {/* Precio */}
           <div className="price-card">
             <IonLabel className="price-label">Precio por pasajero</IonLabel>
@@ -209,7 +421,7 @@ const CreateTrip: React.FC = () => {
         <IonButton
           className="publish-button"
           expand="block"
-          onClick={handlePublish}
+          onClick={() => handlePublish(storedId!)}
         >
           <span>Publicar Viaje</span>
           <IonIcon icon={arrowForwardOutline} />
