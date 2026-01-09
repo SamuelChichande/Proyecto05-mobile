@@ -67,7 +67,10 @@ const Login: React.FC = () => {
         } catch (error: any) {
             alert(error.message);
         }
-    };
+    } catch (error: any) {
+        alert(error.message);
+    }
+};
 
     const handleRegister = async () => {
         if (password !== confirmPassword) {

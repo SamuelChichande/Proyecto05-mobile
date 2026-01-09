@@ -1,0 +1,115 @@
+/* Heredamos estilos base y añadimos los específicos para historial */
+
+.status-banner.completed {
+    background: rgba(45, 211, 111, 0.1); /* Verde suave */
+    border: 1px solid var(--ion-color-success);
+    color: var(--ion-color-success);
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.trip-route-container {
+    background: #1a2027;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.route-point {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.dot.origin {
+    width: 12px;
+    height: 12px;
+    background: var(--ion-color-primary);
+    border-radius: 50%;
+    margin-top: 6px;
+}
+
+.dest-icon {
+    font-size: 24px;
+    color: var(--ion-color-primary);
+}
+
+.route-text .label {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.route-text h3 {
+    margin: 4px 0 0 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.route-line {
+    width: 2px;
+    height: 30px;
+    background: #3b4754;
+    margin-left: 5px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    background: #1a2027;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-item IonIcon {
+    font-size: 20px;
+    color: var(--ion-color-primary);
+}
+
+.info-item p {
+    font-size: 0.65rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.info-item span {
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.driver-info-card {
+    background: #1a2027;
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 4px solid var(--ion-color-primary);
+}
+
+.driver-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    color: #9dabb9;
+}
+
+.history-footer {
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #2a2a2a;
+}

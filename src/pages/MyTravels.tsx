@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   IonPage,
@@ -8,40 +8,65 @@ import {
   IonContent,
   IonButton,
   IonIcon,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
   IonCard,
   IonCardContent,
-  IonChip,
-  IonAvatar
+  IonSpinner,
+  IonText
 } from '@ionic/react';
 import {
-  arrowBackOutline,
   settingsOutline,
-  carOutline,
-  personOutline,
-  timeOutline,
-  peopleOutline,
-  chatbubbleOutline,
-  chevronForwardOutline,
   addOutline,
-  checkmarkCircleOutline,
-  alertCircleOutline
+  chevronForwardOutline,
+  carOutline
 } from 'ionicons/icons';
+
+// @ts-ignore - Esto elimina el error de falta de declaración de tipos para el JS
+import { getTrips } from '../config/database';
+
 import './MyTravels.css';
 
 const MyTravels: React.FC = () => {
-  const [selectedSegment, setSelectedSegment] = useState<'upcoming' | 'past'>('upcoming');
+  const [userTrips, setUserTrips] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const history = useHistory();
 
-  const passengers = [
-    { id: 1, name: 'Sarah', photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDwaQrRtv4JSbcGwwIWzKQAorkiXac1961En5uBRwaccKw5v7avmvqA-YklBoFRYZO39P-wDpgUz7C37iV6sOoQL41xpJ-s1M9-tT3rnJ7zyA2eGCOeEsVU0xGgluwLAFte6pS6h7gA38XvGs7e2PpQUaglyikTBUXtqyMBsvLlUN7DRSLXjh9AgEqHTeHR14XTLKzEUi1RTGfOAK5oUChVB9TSWXcswaPhXxfIrKhOl5krd-A5C3DdMaqTqYOA9M6pO3wmO0Fqlg2_' },
-    { id: 2, name: 'Mike', photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCisTCVpruqxTB8ywFlpynNJm4LbH-NN0cakGTkaGPuJ0HixWhka3E4rtdAEPt8eOW9797vBSdlktPZAkY0_xZYWUq59fokDk9hhVCeU-mlMMuWdYTN6HWn1kIDfZkfPSuIbdeqFCdrSzrNqYDlxDP197Vs3KPybq90htWSe0y0K04PncbrAoSBKtIT095QF0Ayc_0rhyK14uoMzqWwVlr9UjMKyymatCMnh28Hnqas-AdSDSyGtvbrdfG0LF3NPscxX1E_RY8jJK2t' }
-  ];
+  useEffect(() => {
+    const fetchAndFilterTrips = async () => {
+      try {
+        setLoading(true);
+        const currentUserId = localStorage.getItem('userId');
+        const result = await getTrips();
+
+        if (result.status === 'success') {
+          const allTrips = result.data;
+          const filtered: any[] = [];
+
+          const now = new Date(); // Fecha y hora actual
+
+          for (const key in allTrips) {
+            const trip = allTrips[key];
+
+            const dateFormatted = trip.date.replace(/-/g, '/');
+            const tripDateTime = new Date(`${dateFormatted} ${trip.time}`);
+
+            const now = new Date();
+
+            if (trip.userId === currentUserId && tripDateTime < now) {
+              filtered.push({ id: key, ...trip });
+            }
+          }
+          setUserTrips(filtered);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAndFilterTrips();
+  }, []);
 
   const handleCreateTrip = () => {
-    // Navegar a la pantalla de crear viaje
     history.push('/maindashboard/create-trip');
   };
 
@@ -49,188 +74,72 @@ const MyTravels: React.FC = () => {
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonToolbar className="my-trips-toolbar">
-          
           <IonTitle className="my-trips-title">Mis Viajes</IonTitle>
-          
           <IonButton fill="clear" slot="end" className="settings-button">
             <IonIcon slot="icon-only" icon={settingsOutline} />
           </IonButton>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="my-trips-content">
-        {/* Segment Buttons */}
-        <div className="segment-container">
-          <IonSegment 
-            value={selectedSegment} 
-            onIonChange={e => setSelectedSegment(e.detail.value as any)}
-            className="custom-segment"
-          >
-            <IonSegmentButton value="upcoming" className="segment-button">
-              <IonLabel>Próximos</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="past" className="segment-button">
-              <IonLabel>Pasados</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </div>
-
-        {/* Section: Hoy */}
+      <IonContent className="my-trips-content ion-padding">
         <div className="section-container">
-          <h2 className="section-title">Hoy</h2>
-          
-          {/* Card 1: Driver Role */}
-          <IonCard className="trip-card driver-card">
-            <div className="card-header-image">
-              <div 
-                className="map-image"
-                style={{ 
-                  backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7R-10Ar0P9vlSF1cHMqpPBmJfVS6CIl5-fVanD9Kg2p08WF_ZCQyoAVNXN39Xus-N-SmtreMZ1ZFhn0xZcRLMaefRK7gq7RzDXdLz-D86yra5Jvv8KrkSLsuHGvDF5cUh3SrCRv0FiRCOxzWivrR_VBLQ96ZSMT8mSuB9uKdhF_HJPGBlkMq7Tp2ZLx0Ngl9kCAKX1ImSCa70gk7nWS_9zAXGguwohgngB3R16TYK-cb0uV9lKcV0D166Pu-P1DbQEzXR7WNtNj9j")' 
-                }}
-              />
-              <div className="image-overlay"></div>
-              
-              <div className="card-badges">
-                <IonChip className="driver-badge">
-                  <IonIcon icon={carOutline} />
-                  <span>Conductor</span>
-                </IonChip>
-                <IonChip className="confirmed-badge">
-                  <IonIcon icon={checkmarkCircleOutline} />
-                  <span>Confirmado</span>
-                </IonChip>
-              </div>
-              
-              <div className="card-header-info">
-                <p className="trip-date">Jueves, 24 Oct</p>
-                <h3 className="trip-route">Madrid <span className="route-arrow">➝</span> Valencia</h3>
-              </div>
+          <h2 className="section-title">Viajes Pasados</h2>
+
+          {loading ? (
+            <div className="ion-text-center ion-padding" style={{ marginTop: '20px' }}>
+              <IonSpinner name="crescent" color="primary" />
+              <IonText color="medium"><p>Buscando tus viajes...</p></IonText>
             </div>
-            
-            <IonCardContent className="card-content">
-              {/* Time and Duration */}
-              <div className="time-section">
-                <div className="time-info">
-                  <span className="time-label">Salida</span>
-                  <span className="time-value">14:00</span>
-                </div>
-                
-                <div className="duration-section">
-                  <div className="duration-line">
-                    <div className="line-start"></div>
-                    <div className="line-end"></div>
+          ) : userTrips.length > 0 ? (
+            /* Renderizado de viajes filtrados por tu ID de usuario */
+              userTrips.map((trip) => (
+                <IonCard
+                  key={trip.id}
+                  className="trip-card upcoming-card"
+                  onClick={() => history.push({
+                    pathname: '/maindashboard/trip-history-details',
+                    state: { trip: trip }
+                  })}
+>
+                <IonCardContent>
+                  <div className="upcoming-content">
+                    <div className="date-box">
+                      {/* Formateo de fecha desde el string de Firebase */}
+                      <span className="date-day">{trip.date?.split('-')[2] || '??'}</span>
+                      <span className="date-month">
+                        {trip.date ? new Date(trip.date).toLocaleString('es-ES', { month: 'short' }).toUpperCase() : 'MES'}
+                      </span>
+                    </div>
+
+                    <div className="upcoming-info">
+                      <h3 className="trip-route">{trip.origin} ➝ {trip.destination}</h3>
+                      <p className="trip-details">
+                        {trip.time} • {trip.seats} plazas • ${trip.price}
+                      </p>
+                    </div>
+
+                    <IonIcon icon={chevronForwardOutline} className="chevron-icon" />
                   </div>
-                  <span className="duration-text">3h 30m</span>
-                </div>
-                
-                <div className="time-info">
-                  <span className="time-label">Llegada</span>
-                  <span className="time-value">17:30</span>
-                </div>
-              </div>
-              
-              {/* Passengers and Price */}
-              <div className="passengers-section">
-                <div className="passengers-info">
-                  <div className="passengers-avatars">
-                    {passengers.map((passenger, index) => (
-                      <IonAvatar key={passenger.id} className={`passenger-avatar ${index > 0 ? 'avatar-overlap' : ''}`}>
-                        <img src={passenger.photo} alt={passenger.name} />
-                      </IonAvatar>
-                    ))}
-                    <div className="more-passengers">+1</div>
-                  </div>
-                  <span className="passengers-count">3 Pasajeros</span>
-                </div>
-                
-                <div className="price-section">
-                  <span className="trip-price">25,00€</span>
-                </div>
-              </div>
-              
-              {/* Action Button */}
-              <IonButton expand="block" className="view-passengers-btn">
-                <IonIcon icon={peopleOutline} slot="start" />
-                Ver Pasajeros
+                </IonCardContent>
+              </IonCard>
+            ))
+          ) : (
+            /* Estado vacío si el usuario no tiene viajes con su ID */
+            <div className="ion-text-center ion-padding" style={{ marginTop: '40px' }}>
+              <IonIcon icon={carOutline} style={{ fontSize: '64px', color: '#ccc' }} />
+              <h3 style={{ color: '#888' }}>No tienes viajes propios</h3>
+              <p style={{ color: '#aaa' }}>Los viajes que publiques aparecerán aquí.</p>
+              <IonButton fill="outline" style={{ marginTop: '20px' }} onClick={handleCreateTrip}>
+                Publicar Viaje
               </IonButton>
-            </IonCardContent>
-          </IonCard>
+            </div>
+          )}
         </div>
 
-        {/* Section: Mañana */}
-        <div className="section-container">
-          <h2 className="section-title">Mañana</h2>
-          
-          {/* Card 2: Passenger Role */}
-          <IonCard className="trip-card passenger-card">
-            <IonCardContent>
-              <div className="card-header-row">
-                <IonChip className="passenger-badge">
-                  <IonIcon icon={personOutline} />
-                  <span>Pasajero</span>
-                </IonChip>
-                
-                <div className="status-badge pending">
-                  <IonIcon icon={alertCircleOutline} />
-                  <span>Pendiente de aprobación</span>
-                </div>
-              </div>
-              
-              <div className="card-content-row">
-                <div className="trip-info">
-                  <h3 className="trip-route">Barcelona ➝ Zaragoza</h3>
-                  <p className="trip-details">09:30 • Toyota Prius • Conductor: Alex</p>
-                </div>
-                
-                <div className="car-thumbnail">
-                  <div 
-                    className="car-image"
-                    style={{ 
-                      backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdFC0pBCtu57Xlf87DORUm8E1cbVxQlxdmHl9J6CQBdHj5miIMaJHJv3Z0bsI2k-rOu35-aLB2yatIlSG_TwsPIcDyo0txk0z4GaVqfNnT3lwyOEVBE58rnZuKSG9VVugJV3demBwkHQG26LjulbGB3fdcKG2Z0lzEbfjimMxm9H1vEmaC8TygwzlKVfyjhwvZIv-CBWJRHrX4hAtmL-WTCM4R2WXigReyEg9_BODwY-ilR0gW5k4GGc8bel94YxfsCrnVDEFH7pJi")' 
-                    }}
-                  />
-                </div>
-              </div>
-              
-              <div className="card-footer-row">
-                <span className="trip-price">18,50€</span>
-                
-                <div className="action-buttons">
-                  <IonButton fill="clear" className="chat-btn">
-                    <IonIcon icon={chatbubbleOutline} />
-                  </IonButton>
-                  <IonButton className="details-btn" onClick={() => history.push('/maindashboard/trip-details')}>
-                    Detalles
-                  </IonButton>
-                </div>
-              </div>
-            </IonCardContent>
-          </IonCard>
-          
-          {/* Card 3: Upcoming Simple */}
-          <IonCard className="trip-card upcoming-card">
-            <IonCardContent>
-              <div className="upcoming-content">
-                <div className="date-box">
-                  <span className="date-month">Oct</span>
-                  <span className="date-day">28</span>
-                </div>
-                
-                <div className="upcoming-info">
-                  <h3 className="trip-route">Sevilla ➝ Málaga</h3>
-                  <p className="trip-details">18:00 • 1 Asiento</p>
-                </div>
-                
-                <IonIcon icon={chevronForwardOutline} className="chevron-icon" />
-              </div>
-            </IonCardContent>
-          </IonCard>
-        </div>
-        
-        <div className="spacer"></div>
+        <div className="spacer" style={{ height: '80px' }}></div>
       </IonContent>
 
-      {/* Floating Action Button */}
+      {/* Botón Flotante para Crear Viaje */}
       <div className="fab-container">
         <IonButton className="create-trip-fab" onClick={handleCreateTrip}>
           <IonIcon icon={addOutline} slot="start" />
