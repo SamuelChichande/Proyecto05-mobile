@@ -5,6 +5,8 @@ interface UserData {
     name: string;
     email: string;
     password: string;
+    rating?: string;
+    tripCount?: string;
 }
 
 class Authentication {
@@ -60,7 +62,7 @@ class Authentication {
     async register(userData: UserData) {
         this.validateUserData(userData);
         try {
-            const result = await saveUser(userData.name, userData.email, userData.password);
+            const result = await saveUser(userData.name, userData.email, userData.password, userData.rating, userData.tripCount);
             if (result.status === 'success') {
                 return result;
             } else {

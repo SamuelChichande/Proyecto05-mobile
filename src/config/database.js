@@ -16,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const saveUser = (name, address, password) => {
+const saveUser = (name, address, password, rating, tripCount) => {
 
     const userRef = ref(database, "users/");
     const newUserRef = push(userRef);
@@ -24,7 +24,9 @@ const saveUser = (name, address, password) => {
     return set(newUserRef, {
         name,
         address,
-        password
+        password,
+        rating,
+        tripCount
     })
         .then(() => ({ status: "success", message: "User saved successfully." }))
         .catch(error => ({ status: "error", message: error?.message || String(error) }));
@@ -47,7 +49,46 @@ let getUsers = async () => {
         });
 };
 
-let saveTrip = async (origin, destination, date, time, seats, price, userId) => {
+let getUserById = async (userId) => {
+    // Validar que se proporcione un ID
+    if (!userId || typeof userId !== 'string' || userId.trim() === '') {
+        return {
+            status: "error",
+            message: "Se requiere un ID de usuario válido"
+        };
+    }
+
+    try {
+        const dbRef = ref(getDatabase());
+        const userPath = `users/${userId}`;
+        
+        const snapshot = await get(child(dbRef, userPath));
+        
+        if (snapshot.exists()) {
+            return {
+                status: "success",
+                data: {
+                    id: userId,
+                    ...snapshot.val()
+                }
+            };
+        } else {
+            return {
+                status: "not_found",
+                message: `Usuario con ID "${userId}" no encontrado`
+            };
+        }
+    } catch (error) {
+        console.error(`Error getting user ${userId}:`, error);
+        return {
+            status: "error",
+            message: error?.message || String(error),
+            code: error?.code || null
+        };
+    }
+};
+
+let saveTrip = async (origin, destination, date, time, timeTravel, seats, car, price, userId) => {
     const tripRef = ref(database, "trips/");
     const newTripRef = push(tripRef);
 
@@ -56,7 +97,9 @@ let saveTrip = async (origin, destination, date, time, seats, price, userId) => 
         destination,
         date,
         time,
+        timeTravel,
         seats,
+        car,
         price,
         userId
     })
@@ -80,4 +123,4 @@ let getTrips = async () => {
         });
 }
 
-export { saveUser, getUsers, saveTrip, getTrips };
+export { saveUser, getUsers, getUserById, saveTrip, getTrips };

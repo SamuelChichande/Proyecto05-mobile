@@ -75,7 +75,7 @@ const Login: React.FC = () => {
             return;
         }
         try {
-            await auth.register({ name, email, password });
+            await auth.register({ name, email, password, rating: "0.0", tripCount: "0 viajes" });
             alert("Registro exitoso. Ahora puedes iniciar sesión.");
             reset();
         } catch (error: any) {

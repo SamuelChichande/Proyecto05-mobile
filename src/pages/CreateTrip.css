@@ -131,6 +131,14 @@
   margin-left: 4px;
 }
 
+.autocomplete-list {
+  position: relative;
+  z-index: 1000;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
 /* Grid de fecha y hora */
 .datetime-grid {
   padding: 0;
@@ -253,6 +261,26 @@
   color: var(--text-primary);
   width: 16px;
   text-align: center;
+}
+
+/* Tarjeta de tipo de vehículo */
+.typecar-card {
+  background: var(--surface-dark);
+  border-radius: 24px;
+  padding: 16px;
+  border: 1px solid var(--border-dark);
+  margin-bottom: 20px;
+}
+
+.typecar-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  outline: none;
 }
 
 /* Tarjeta de precio */
