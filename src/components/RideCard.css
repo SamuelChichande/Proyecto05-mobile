@@ -183,3 +183,54 @@
     padding: 10px 20px;
     border-radius: 25px;
 }
+
+/* Estilos para identificar tipo de viaje */
+.driver-trip {
+    border-left: 4px solid #3880ff;
+    position: relative;
+}
+
+.passenger-trip {
+    border-left: 4px solid #10dc60;
+}
+
+.trip-type-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.driver-badge {
+    background-color: #e3f2fd;
+    color: #3880ff;
+}
+
+.trip-stats {
+    display: flex;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 5px;
+    flex-wrap: wrap;
+}
+
+.trip-stats span {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.passenger-count {
+    color: #10dc60;
+}
+
+.available-seats {
+    color: #ff6b6b;
+}

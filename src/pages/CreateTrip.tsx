@@ -194,6 +194,7 @@ const CreateTrip: React.FC = () => {
     }
     resetForm();
     setShowAlert(true);
+    window.dispatchEvent(new Event('trip-created'));
   };
 
   return (

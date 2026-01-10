@@ -68,3 +68,81 @@ ion-avatar {
   margin-bottom: 1.5rem;
   font-weight: 500;
 }
+
+/* Estilos para el segmento de viajes */
+.trip-segment {
+    margin: 15px 0;
+    --background: #151F31;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.trip-segment ion-segment-button {
+    --background-checked: #1E293B;
+    --border-radius: 8px;
+    --indicator-color: transparent;
+    --color: white;
+    --color-checked: #3880ff;
+    font-weight: 500;
+    min-height: 40px;
+}
+
+.trip-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.trip-counters {
+    display: flex;
+    gap: 10px;
+}
+
+.trip-counter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    color: #666;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.trip-counter.active {
+    background-color: #3880ff;
+    color: white;
+}
+
+.trip-counter ion-icon {
+    font-size: 1rem;
+}
+
+.trips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.no-trips-message {
+    text-align: center;
+    padding: 40px 20px;
+    border: 2px solid #666;
+    border-radius: 10px;
+    margin: 20px 0;
+    background-color: #1C2739;
+}
+
+.no-trips-message h4 {
+    margin: 15px 0;
+    color: #666;
+}
+
+.no-trips-message ion-icon {
+    font-size: 48px;
+}
+
