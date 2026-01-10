@@ -99,8 +99,14 @@ const HomePage: React.FC = () => {
     }
 
     const formatPrice = (value: String) => {
-        priceValue = value.split('.')[0];
-        priceUnit = value.split('.')[1];
+        const listPrice = value.split('.');
+        if (listPrice.length === 1) {
+            priceValue = listPrice[0];
+            priceUnit = '00';
+            return;
+        }
+        priceValue = listPrice[0];
+        priceUnit = listPrice[1];
     }
 
     const loadNextTrip = async (userId: string) => {
@@ -113,25 +119,27 @@ const HomePage: React.FC = () => {
                 // Filtar el siguiente viaje del usuario
                 for (const tripId in trips) {
                     const trip = trips[tripId];
-                    if (trip.userId === userId) {
-                        // Formatear fecha y hora
-                        const formattedTitle = formatFechaHora(trip.date, trip.time);
-                        // Formatear precio
-                        formatPrice(trip.price);
+                    for (const passengerId of trip.passengersID || []) {
+                        if (passengerId === userId) {
+                            // Formatear fecha y hora
+                            const formattedTitle = formatFechaHora(trip.date, trip.time);
+                            // Formatear precio
+                            formatPrice(trip.price);
 
-                        setNextTrip({
-                            title: formattedTitle,
-                            timeTravel: trip.timeTravel,
-                            startPoint: trip.origin,
-                            endPoint: trip.destination,
-                            driverName: trip.driverName,
-                            vehicle: trip.car,
-                            rating: rating,
-                            tripCount: tripCount,
-                            priceValue: priceValue,
-                            priceUnit: priceUnit
-                        });
-                        return; // Salir después de encontrar el primer viaje
+                            setNextTrip({
+                                title: formattedTitle,
+                                timeTravel: trip.timeTravel,
+                                startPoint: trip.origin,
+                                endPoint: trip.destination,
+                                driverName: trip.driverName,
+                                vehicle: trip.car,
+                                rating: rating,
+                                tripCount: tripCount,
+                                priceValue: priceValue,
+                                priceUnit: priceUnit
+                            });
+                            return; // Salir después de encontrar el primer viaje
+                        }
                     }
                 }
                 setNextTrip(null); // No se encontraron viajes para el usuario

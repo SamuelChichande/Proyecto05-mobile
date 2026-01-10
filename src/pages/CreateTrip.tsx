@@ -53,9 +53,9 @@ const CreateTrip: React.FC = () => {
   const [destinationPredictions, setDestinationPredictions] = useState<any[]>([]); // Sugerencias de destino
   const [timeTravel, setTimeTravel] = useState<string>(''); // Duración del viaje
   const [distanceKm, setDistanceKm] = useState<string>(''); // Distancia en km
+  const [formattedTime, setFormattedTime] = useState<string>(''); // Hora formateada para mostrar
   const [googleReady, setGoogleReady] = useState(false); // Estado para verificar si Google Maps está cargado
 
-  let formatTime = '';
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const autocompleteServiceRef = React.useRef<any>(null);
   const history = useHistory();
@@ -127,7 +127,7 @@ const CreateTrip: React.FC = () => {
     autocompleteServiceRef.current.getPlacePredictions(
       {
         input: value,
-        componentRestrictions: { country: 'es' }, // o 'ec'
+        componentRestrictions: { country: 'ec' }, // Restringir a Ecuador
         types: ['geocode']
       },
       (results: any[]) => {
@@ -184,7 +184,7 @@ const CreateTrip: React.FC = () => {
     }
 
     try {
-      const result = await saveTrip(origin, destination, date, formatTime, timeTravel, seats, car, price, idUser);
+      const result = await saveTrip(origin, destination, date, formattedTime, timeTravel, seats, car, price, idUser, []);
       if (result.status != 'success') {
         throw new Error(result.message);
       }
@@ -319,10 +319,7 @@ const CreateTrip: React.FC = () => {
                     type="date"
                     className="datetime-input"
                     value={date}
-                    onChange={(e) => {
-                      setDate(e.target.value);
-                      formatTime = formatTimeForDisplay(e.target.value);
-                    }}
+                    onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
               </IonCol>
@@ -337,7 +334,11 @@ const CreateTrip: React.FC = () => {
                     type="time"
                     className="datetime-input"
                     value={time}
-                    onChange={(e) => setTime(e.target.value)}
+                    onChange={(e) => {
+                      setTime(e.target.value); 
+                      setFormattedTime(formatTimeForDisplay(e.target.value));
+                    }
+                  }
                   />
                 </div>
               </IonCol>
