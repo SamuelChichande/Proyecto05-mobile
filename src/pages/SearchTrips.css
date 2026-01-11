@@ -1,0 +1,161 @@
+.search-toolbar {
+    padding: 0 10px 10px 10px;
+    --background: var(--ion-background-color);
+}
+
+.custom-searchbar {
+    --background: #1f2937; 
+    --color: white;
+    --placeholder-color: #9ca3af;
+    --icon-color: #9ca3af;
+    --border-radius: 12px;
+    padding: 0;
+}
+
+.search-content {
+    --background: #111827; 
+}
+
+.loading-container, .empty-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+    color: #9ca3af;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.results-list {
+    padding: 16px;
+}
+
+.results-header {
+    margin-bottom: 16px;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.search-trip-card {
+    margin: 0 0 16px 0;
+    background: #1f2937;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.search-trip-card ion-card-content {
+    padding: 16px;
+}
+
+.trip-main-info {
+    margin-bottom: 16px;
+}
+
+.trip-time-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.trip-time-price .time {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.trip-time-price .price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    margin: 0;
+}
+
+.location-node {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.node-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.node-dot.origin {
+    border: 2px solid #9ca3af;
+    background: transparent;
+}
+
+.node-dot.destination {
+    background: var(--ion-color-primary);
+}
+
+.location-connector {
+    width: 2px;
+    height: 20px;
+    background: #374151; 
+    margin-left: 4px; 
+    margin-top: -2px;
+    margin-bottom: -2px;
+}
+
+.location-text {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Footer de la tarjeta */
+.trip-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #374151;
+}
+
+.driver-preview {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+.trip-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.seats-badge {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.date-badge {
+    --background: #374151;
+    --color: #e5e7eb;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

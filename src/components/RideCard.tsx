@@ -2,21 +2,21 @@ import React from 'react';
 import {
     IonButton,
     IonAvatar,
-    IonIcon,
-    useIonRouter
+    IonIcon
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 import {
     navigate,
     star,
     car,
     starOutline,
     starHalf,
-    person // Agregar icono de persona
+    person
 } from 'ionicons/icons';
 import './RideCard.css';
 
 interface Trip {
-    id?: string; // Opcional para compatibilidad
+    id?: string;
     title: string;
     timeTravel: string;
     startPoint: string;
@@ -27,29 +27,34 @@ interface Trip {
     tripCount: string;
     priceValue: string;
     priceUnit: string;
-    // Nuevas propiedades opcionales
     tripType?: 'passenger' | 'driver';
     passengersCount?: number;
     availableSeats?: number;
     isDriver?: boolean;
+    origin?: string;
+    destination?: string;
+    time?: string;
+    date?: string;
+    price?: string;
+    seats?: number;
+    passengersID?: string[];
 }
 
 interface RideCardProps {
     trip: Trip;
-    tripType?: 'passenger' | 'driver'; // Prop opcional
+    tripType?: 'passenger' | 'driver';
 }
 
 const RideCard = ({ trip, tripType = 'passenger' }: RideCardProps) => {
-    const router = useIonRouter();
+    const history = useHistory();
 
-    // Determinar si es conductor (puede venir de tripType o de isDriver)
     const isDriverTrip = tripType === 'driver' || trip.isDriver;
     
     const title = trip.title;
     const timeTravel = trip.timeTravel;
     const startPoint = trip.startPoint;
     const endPoint = trip.endPoint;
-    const driverName = isDriverTrip ? "Tú" : trip.driverName; // Cambiar nombre si es conductor
+    const driverName = isDriverTrip ? "Tú" : trip.driverName;
     const vehicle = trip.vehicle;
     const rating = trip.rating;
     const tripCount = trip.tripCount;
@@ -57,15 +62,17 @@ const RideCard = ({ trip, tripType = 'passenger' }: RideCardProps) => {
     const priceUnit = "." + trip.priceUnit;
 
     const handleViewDetails = () => {
-        // Pasar parámetros según el tipo de viaje
-        const state = {
-            tripId: trip.id,
-            tripType: tripType,
-            isDriver: isDriverTrip
-        };
-        //router.push('/maindashboard/trip-details', 'forward', 'push', state);
-        //router.push('/maindashboard/trip-details', 'forward', 'push');
-        router.push('/maindashboard/manage-trip', 'forward', 'push');
+        const targetPath = isDriverTrip 
+            ? '/maindashboard/manage-trip' 
+            : '/maindashboard/trip-details';
+
+        history.push({
+            pathname: targetPath,
+            state: { 
+                trip: trip,
+                isDriver: isDriverTrip
+            }
+        });
     };
 
     return (
