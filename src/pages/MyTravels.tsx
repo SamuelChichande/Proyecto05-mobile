@@ -62,6 +62,8 @@ const MyTravels: React.FC = () => {
           const sorter = (a: Trip, b: Trip) => new Date(`${b.date} ${b.time}`).getTime() - new Date(`${a.date} ${a.time}`).getTime();
           setDriverTrips(dList.sort(sorter));
           setPassengerTrips(pList.sort(sorter));
+
+          localStorage.setItem('DriverTripsCount', dList.length.toString());
           
           console.log(`Total Conductor: ${dList.length}, Total Pasajero: ${pList.length}`);
           console.log("--- DEBUG END ---");

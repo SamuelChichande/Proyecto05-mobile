@@ -11,7 +11,7 @@ import {
   checkmarkCircle, alertCircleOutline, closeCircleOutline
 } from 'ionicons/icons';
 // @ts-ignore
-import { joinTrip } from '../config/database'; 
+import { joinTrip, cancelTripReservation } from '../config/database'; 
 import './TripDetails.css';
 
 const TripDetails: React.FC = () => {
@@ -62,6 +62,41 @@ const TripDetails: React.FC = () => {
     }
   };
 
+  const handleCancelReservation = async () => {
+    try {
+        setLoading(true);
+        const result = await cancelTripReservation(trip.id, currentUserId);
+        setLoading(false);
+
+        if (result.status === 'success') {
+            alert("Reserva cancelada.");
+            window.dispatchEvent(new Event('trip-cancelled'));
+            history.push('/maindashboard/home');
+        } else {
+            alert("Error al cancelar: " + result.message);
+        }
+    } catch (error) {
+        setLoading(false);
+        console.error("Error cancelando la reserva:", error);
+        alert("Ocurrió un error al cancelar la reserva.");
+    }
+    /*
+      if (!currentUserId) { alert("Inicia sesión primero"); return; }
+    setLoading(true);
+    
+    const result = await cancelTripReservation(trip.id, currentUserId);
+    setLoading(false);
+
+    if (result.status === 'success') {
+      alert("¡Reserva cancelada exitosamente!");
+      window.dispatchEvent(new Event('trip-cancelled'));
+      history.push('/maindashboard/home');
+    } else {
+      alert("Error: " + result.message);
+    }
+    */
+  }
+
   const renderFooterAction = () => {
     if (isDriver) {
         return (
@@ -82,6 +117,7 @@ const TripDetails: React.FC = () => {
                 fill="solid" 
                 shape="round"
                 className="cancel-btn-custom"
+                onClick={handleCancelReservation}
               >
                 Cancelar Reserva
               </IonButton>

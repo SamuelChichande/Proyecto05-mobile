@@ -6,7 +6,7 @@ import {
 } from '@ionic/react';
 import { notifications, car, person } from 'ionicons/icons';
 // @ts-ignore
-import { getTrips } from '../config/database';
+import { getTrips, getUserById } from '../config/database';
 
 import './HomePage.css';
 import RideCard from '../components/RideCard';
@@ -63,17 +63,17 @@ const HomePage: React.FC = () => {
         try {
             setLoading(true);
             const currentUserId = localStorage.getItem('idUser');
-            
+
             if (!currentUserId) { setLoading(false); return; }
 
             const result = await getTrips();
-            
+
             if (result.status === 'success') {
                 const trips = result.data;
                 const driverList: Trip[] = [];
                 const passengerList: Trip[] = [];
                 const now = new Date();
-                
+
                 for (const tripId in trips) {
                     const trip = trips[tripId];
                     if (!trip.date || !trip.time) continue;
@@ -82,14 +82,28 @@ const HomePage: React.FC = () => {
 
                     if (tripDate > now) {
                         const { priceValue, priceUnit } = formatPrice(trip.price);
-                        
+
                         const totalSeats = parseInt(trip.seats) || 4;
                         const passengersList = trip.passengersID || [];
                         const isFull = passengersList.length >= totalSeats;
 
                         if (isFull && trip.userId !== currentUserId && !passengersList.includes(currentUserId)) {
-                            continue; 
+                            continue;
                         }
+
+                        let rating = "0.0";
+
+                        // Obtener nombre del conductor desde la base de datos si es necesario
+                        const driverName = await getUserById(trip.userId).then((res: any) => {
+                            if (res.status === 'success') {
+                                rating = res.data.rating || "0.0";
+                                return res.data.name || "Usuario";
+                            }
+                            return "Usuario";
+                        });
+
+                        console.log("Processing trip:", tripId, "Driver:", driverName);
+
                         const tripObj: Trip = {
                             id: tripId,
                             // Datos visuales para la tarjeta
@@ -97,11 +111,11 @@ const HomePage: React.FC = () => {
                             timeTravel: trip.timeTravel,
                             startPoint: trip.origin,
                             endPoint: trip.destination,
-                            driverName: "Usuario",
+                            driverName: driverName,
                             vehicle: trip.car || "Auto",
-                            rating: "5.0",
+                            rating: rating,
                             tripCount: "1",
-                            priceValue, 
+                            priceValue,
                             priceUnit,
                             isDriver: false,
                             date: trip.date,
@@ -113,7 +127,6 @@ const HomePage: React.FC = () => {
                             passengersID: trip.passengersID || [],
                             userId: trip.userId
                         };
-
                         // Clasificación
                         if (trip.userId === currentUserId) {
                             tripObj.isDriver = true;
@@ -125,7 +138,7 @@ const HomePage: React.FC = () => {
                         }
                     }
                 }
-                
+
                 setDriverTrips(driverList);
                 setPassengerTrips(passengerList);
             }
@@ -141,6 +154,11 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         window.addEventListener('trip-created', refreshTrips);
         return () => window.removeEventListener('trip-created', refreshTrips);
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('trip-cancelled', refreshTrips);
+        return () => window.removeEventListener('trip-cancelled', refreshTrips);
     }, []);
 
     const getActiveTrips = () => activeSegment === 'passenger' ? passengerTrips : driverTrips;
@@ -162,28 +180,28 @@ const HomePage: React.FC = () => {
     return (
         <IonPage>
             <IonContent className="ion-padding">
-                <IonList lines="none" style={{background:'transparent'}}>
+                <IonList lines="none" style={{ background: 'transparent' }}>
                     <IonItem className="welcome-item">
-                        <IonAvatar className="welcome-avatar"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwr_zZjgvmu4BccwDNIHic8K5dyehw7cSYA&s" alt=""/></IonAvatar>
+                        <IonAvatar className="welcome-avatar"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwr_zZjgvmu4BccwDNIHic8K5dyehw7cSYA&s" alt="" /></IonAvatar>
                         <div className="welcome-content"><sub className="welcome-subtitle">BIENVENIDO</sub><IonLabel className="welcome-title">Hola, {userName}</IonLabel></div>
                         <IonIcon icon={notifications} slot='end' size='large' />
                     </IonItem>
                 </IonList>
-                
+
                 <div className="dashboard-container">
                     <div className="trip-summary-header">
                         <h3>Próximos Viajes</h3>
                         <div className="trip-counters">
-                            <span onClick={() => setActiveSegment('passenger')} className={`trip-counter ${activeSegment === 'passenger'?'active':''}`}><IonIcon icon={person}/> {passengerTrips.length}</span>
-                            <span onClick={() => setActiveSegment('driver')} className={`trip-counter ${activeSegment === 'driver'?'active':''}`}><IonIcon icon={car}/> {driverTrips.length}</span>
+                            <span onClick={() => setActiveSegment('passenger')} className={`trip-counter ${activeSegment === 'passenger' ? 'active' : ''}`}><IonIcon icon={person} /> {passengerTrips.length}</span>
+                            <span onClick={() => setActiveSegment('driver')} className={`trip-counter ${activeSegment === 'driver' ? 'active' : ''}`}><IonIcon icon={car} /> {driverTrips.length}</span>
                         </div>
                     </div>
-                    
+
                     <IonSegment value={activeSegment} onIonChange={e => setActiveSegment(e.detail.value as TripType)} className="trip-segment">
                         <IonSegmentButton value="passenger"><IonLabel>Como pasajero</IonLabel></IonSegmentButton>
                         <IonSegmentButton value="driver"><IonLabel>Como conductor</IonLabel></IonSegmentButton>
                     </IonSegment>
-                    
+
                     {renderTrips(getActiveTrips(), activeSegment)}
                 </div>
             </IonContent>
