@@ -88,7 +88,7 @@ let getUserById = async (userId) => {
     }
 };
 
-let saveTrip = async (origin, destination, date, time, timeTravel, seats, car, price, userId) => {
+let saveTrip = async (origin, destination, date, time, timeTravel, seats, car, price, userId, passengersID) => {
     const tripRef = ref(database, "trips/");
     const newTripRef = push(tripRef);
 
@@ -101,7 +101,8 @@ let saveTrip = async (origin, destination, date, time, timeTravel, seats, car, p
         seats,
         car,
         price,
-        userId
+        userId,
+        passengersID
     })
         .then(() => ({ status: "success", message: "Trip saved successfully." }))
         .catch(error => ({ status: "error", message: error?.message || String(error) }));

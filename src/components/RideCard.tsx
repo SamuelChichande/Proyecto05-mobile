@@ -3,18 +3,20 @@ import {
     IonButton,
     IonAvatar,
     IonIcon,
-    useIonRouter // IMPORTANTE: Hook para navegar
+    useIonRouter
 } from '@ionic/react';
 import {
     navigate,
     star,
     car,
     starOutline,
-    starHalf
+    starHalf,
+    person // Agregar icono de persona
 } from 'ionicons/icons';
 import './RideCard.css';
 
 interface Trip {
+    id?: string; // Opcional para compatibilidad
     title: string;
     timeTravel: string;
     startPoint: string;
@@ -25,32 +27,72 @@ interface Trip {
     tripCount: string;
     priceValue: string;
     priceUnit: string;
+    // Nuevas propiedades opcionales
+    tripType?: 'passenger' | 'driver';
+    passengersCount?: number;
+    availableSeats?: number;
+    isDriver?: boolean;
 }
 
-const RideCard = ({ trip }: { trip: Trip }) => {
+interface RideCardProps {
+    trip: Trip;
+    tripType?: 'passenger' | 'driver'; // Prop opcional
+}
+
+const RideCard = ({ trip, tripType = 'passenger' }: RideCardProps) => {
     const router = useIonRouter();
 
-    const title = trip.title; //"HOY, 14:30PM"
-    const timeTravel = trip.timeTravel; //"30min"
-    const startPoint = trip.startPoint; //"Campus ESPOL"
-    const endPoint = trip.endPoint; //"Centro Comercial El Dorado"
-    const driverName = trip.driverName; //"Juan Perez"
-    const vehicle = trip.vehicle; //"Toyota Corolla - ABC-1234"
-    const rating = trip.rating; //"4.8"
-    const tripCount = trip.tripCount; //"120 viajes"
-    const priceValue = "$" + trip.priceValue; //"5.00"
-    const priceUnit = "." + trip.priceUnit; //"00"
+    // Determinar si es conductor (puede venir de tripType o de isDriver)
+    const isDriverTrip = tripType === 'driver' || trip.isDriver;
+    
+    const title = trip.title;
+    const timeTravel = trip.timeTravel;
+    const startPoint = trip.startPoint;
+    const endPoint = trip.endPoint;
+    const driverName = isDriverTrip ? "Tú" : trip.driverName; // Cambiar nombre si es conductor
+    const vehicle = trip.vehicle;
+    const rating = trip.rating;
+    const tripCount = trip.tripCount;
+    const priceValue = "$" + trip.priceValue;
+    const priceUnit = "." + trip.priceUnit;
 
     const handleViewDetails = () => {
-        router.push('/maindashboard/trip-details', 'forward', 'push');
+        // Pasar parámetros según el tipo de viaje
+        const state = {
+            tripId: trip.id,
+            tripType: tripType,
+            isDriver: isDriverTrip
+        };
+        //router.push('/maindashboard/trip-details', 'forward', 'push', state);
+        //router.push('/maindashboard/trip-details', 'forward', 'push');
+        router.push('/maindashboard/manage-trip', 'forward', 'push');
     };
 
     return (
-        <div className="rideCardNoImage">
+        <div className={`rideCardNoImage ${isDriverTrip ? 'driver-trip' : 'passenger-trip'}`}>
+            {/* Badge de tipo de viaje */}
+            {isDriverTrip && (
+                <div className="trip-type-badge driver-badge">
+                    <IonIcon icon={car} /> Como conductor
+                </div>
+            )}
+            
             {/* Header */}
             <div className="rideCardHeader">
                 <div>
                     <h3 className="rideCardTitle">{title}</h3>
+                    {isDriverTrip && trip.passengersCount !== undefined && (
+                        <div className="trip-stats">
+                            <span className="passenger-count">
+                                <IonIcon icon={person} /> {trip.passengersCount} pasajeros
+                            </span>
+                            {trip.availableSeats !== undefined && (
+                                <span className="available-seats">
+                                    • {trip.availableSeats} asientos disponibles
+                                </span>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <div className="rideCardTimeBadge">{timeTravel}</div>
             </div>
@@ -94,13 +136,10 @@ const RideCard = ({ trip }: { trip: Trip }) => {
                                 let iconName = starOutline;
 
                                 if (index <= Math.floor(parseFloat(trip.rating))) {
-                                    // Estrella completa
                                     iconName = star;
                                 } else if (index - 0.5 <= parseFloat(trip.rating)) {
-                                    // Media estrella
                                     iconName = starHalf;
                                 }
-                                // Si no, queda starOutline (vacía)
 
                                 return (
                                     <IonIcon
@@ -122,9 +161,9 @@ const RideCard = ({ trip }: { trip: Trip }) => {
                     fill="solid"
                     color="primary"
                     className="rideCardActionButton"
-                    onClick={handleViewDetails} /* 3. VINCULACIÓN AQUÍ */
+                    onClick={handleViewDetails}
                 >
-                    Ver detalles
+                    {isDriverTrip ? "Gestionar viaje" : "Ver detalles"}
                 </IonButton>
 
                 <div className="rideCardPrice">

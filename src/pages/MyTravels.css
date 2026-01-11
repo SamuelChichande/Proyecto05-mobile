@@ -1,3 +1,5 @@
+/* MyTravels.css - Modo Oscuro Optimizado */
+
 /* Variables CSS para modo oscuro */
 :root {
   --primary: #137fec;
@@ -7,6 +9,12 @@
   --text-secondary: #9dabb9;
   --border-color: #2a313a;
   --card-border: #374151;
+  --driver-color: #137fec;
+  --passenger-color: #d8b4fe;
+  --driver-bg: rgba(19, 127, 236, 0.1);
+  --passenger-bg: rgba(168, 85, 247, 0.1);
+  --success-color: #10b981;
+  --pending-color: #fb923c;
 }
 
 /* Estilos generales */
@@ -14,6 +22,7 @@
   --background: var(--background-dark);
   color: var(--text-primary);
   font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
 }
 
 /* Toolbar personalizado */
@@ -33,14 +42,6 @@
   text-align: center;
 }
 
-.back-button {
-  --color: var(--text-primary);
-  --background-hover: rgba(255, 255, 255, 0.1);
-  width: 48px;
-  height: 48px;
-  --border-radius: 9999px;
-}
-
 .settings-button {
   --color: var(--text-primary);
   --background-hover: rgba(255, 255, 255, 0.1);
@@ -49,9 +50,56 @@
   --border-radius: 9999px;
 }
 
-/* Segment Buttons */
+/* Trip Counters */
+.trip-counters {
+  display: flex;
+  gap: 12px;
+  padding: 16px 16px 8px;
+  background: var(--background-dark);
+}
+
+.trip-counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface-dark);
+  border-radius: 16px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 0;
+  color: var(--text-secondary);
+}
+
+.trip-counter.active {
+  border-color: var(--primary);
+  background: var(--driver-bg);
+  color: var(--primary);
+}
+
+.trip-counter.active.passenger-counter {
+  border-color: var(--passenger-color);
+  background: var(--passenger-bg);
+  color: var(--passenger-color);
+}
+
+.trip-counter ion-icon {
+  font-size: 1.2rem;
+}
+
+.trip-counter span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Segment Container */
 .segment-container {
-  padding: 16px;
+  padding: 0 16px 16px;
   background: var(--background-dark);
 }
 
@@ -64,12 +112,13 @@
 
 .segment-button {
   --color: var(--text-secondary);
-  --color-checked: var(--primary);
-  --indicator-color: var(--surface-dark);
-  --indicator-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --color-checked: var(--text-primary);
+  --indicator-color: var(--primary);
+  --indicator-box-shadow: 0 2px 8px rgba(19, 127, 236, 0.3);
   min-height: 40px;
   border-radius: 9999px;
   margin: 0;
+  font-weight: 500;
 }
 
 .segment-button::part(indicator) {
@@ -83,418 +132,223 @@
 }
 
 .section-title {
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: bold;
   color: var(--text-primary);
   letter-spacing: -0.015em;
   text-align: left;
-  padding-bottom: 12px;
-  padding-top: 8px;
+  padding: 8px 0 16px;
   margin: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--surface-dark);
+  border-radius: 16px;
+  margin-top: 20px;
+  border: 1px solid var(--card-border);
+}
+
+.loading-container ion-spinner {
+  margin-bottom: 16px;
+  --color: var(--primary);
+}
+
+.loading-container p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--surface-dark);
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 20px;
+  border: 2px dashed var(--border-color);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  color: var(--border-color);
+  margin-bottom: 20px;
+}
+
+.empty-state-title {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.empty-state-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0 0 20px 0;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+.empty-state-button {
+  --border-color: var(--primary);
+  --color: var(--primary);
+  --border-radius: 9999px;
+  font-weight: 500;
 }
 
 /* Trip Cards General */
 .trip-card {
   --background: var(--surface-dark);
+  background: var(--surface-dark);
   border-radius: 16px;
   border: 1px solid var(--card-border);
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Driver Card */
-.driver-card {
-  padding: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
   overflow: hidden;
 }
 
-.card-header-image {
-  position: relative;
-  height: 128px;
-  width: 100%;
-  overflow: hidden;
+.trip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  border-color: var(--primary);
 }
 
-.map-image {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-}
-
-.image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-}
-
-.card-badges {
-  position: absolute;
-  top: 12px;
-  left: 12px;
+/* Trip Card Content */
+.trip-card-content {
   display: flex;
-  gap: 8px;
-  z-index: 2;
-}
-
-.driver-badge {
-  --background: rgba(19, 127, 236, 0.9);
-  --color: white;
-  backdrop-filter: blur(10px);
-  margin: 0;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.driver-badge ion-icon {
-  font-size: 14px;
-  margin-right: 4px;
-}
-
-.confirmed-badge {
-  --background: rgba(16, 185, 129, 0.9);
-  --color: white;
-  backdrop-filter: blur(10px);
-  margin: 0;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.confirmed-badge ion-icon {
-  font-size: 14px;
-  margin-right: 4px;
-}
-
-.card-header-info {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  z-index: 2;
-}
-
-.trip-date {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 4px 0;
-}
-
-.trip-route {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-  margin: 0;
-}
-
-.route-arrow {
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0 4px;
-}
-
-/* Card Content */
-.card-content {
+  align-items: center;
+  gap: 16px;
   padding: 16px;
 }
 
-.time-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.time-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.time-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-bottom: 4px;
-}
-
-.time-value {
-  font-size: 16px;
-  font-weight: bold;
-  color: var(--text-primary);
-}
-
-.duration-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  padding: 0 16px;
-}
-
-.duration-line {
-  width: 100%;
-  height: 1px;
-  background: var(--border-color);
-  position: relative;
-}
-
-.line-start,
-.line-end {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--text-primary);
-  top: -3.5px;
-}
-
-.line-start {
-  left: 0;
-}
-
-.line-end {
-  right: 0;
-}
-
-.duration-text {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin-top: 4px;
-}
-
-.passengers-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-}
-
-.passengers-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.passengers-avatars {
-  display: flex;
-}
-
-.passenger-avatar {
-  width: 32px;
-  height: 32px;
-  border: 2px solid var(--surface-dark);
-}
-
-.avatar-overlap {
-  margin-left: -8px;
-}
-
-.more-passengers {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #374151;
-  border: 2px solid var(--surface-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-left: -8px;
-}
-
-.passengers-count {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.price-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.trip-price {
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--primary);
-}
-
-.view-passengers-btn {
-  --background: var(--text-primary);
-  --color: var(--surface-dark);
-  --background-hover: #e5e7eb;
-  --border-radius: 9999px;
-  height: 40px;
-  font-weight: bold;
-  font-size: 14px;
-  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 8px;
-}
-
-/* Passenger Card */
-.passenger-card {
-  margin-bottom: 16px;
-}
-
-.card-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.passenger-badge {
-  --background: rgba(168, 85, 247, 0.1);
-  --color: #d8b4fe;
-  margin: 0;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.passenger-badge ion-icon {
-  font-size: 14px;
-  margin-right: 4px;
-}
-
-.status-badge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.status-badge.pending {
-  background: rgba(249, 115, 22, 0.1);
-  color: #fb923c;
-}
-
-.status-badge ion-icon {
-  font-size: 14px;
-}
-
-.card-content-row {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.trip-info {
-  flex: 1;
-}
-
-.trip-details {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin: 4px 0 0 0;
-}
-
-.car-thumbnail {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  background: #374151;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.car-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-}
-
-.card-footer-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
-}
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.chat-btn {
-  --color: var(--text-primary);
-  --background-hover: rgba(255, 255, 255, 0.1);
-  width: 32px;
-  height: 32px;
-  --border-radius: 9999px;
-  margin: 0;
-}
-
-.details-btn {
-  --background: rgba(19, 127, 236, 0.1);
-  --color: var(--primary);
-  --background-hover: rgba(19, 127, 236, 0.2);
-  height: 32px;
-  font-size: 14px;
-  font-weight: bold;
-  --border-radius: 9999px;
-  margin: 0;
-}
-
-/* Upcoming Card */
-.upcoming-card {
-  opacity: 0.6;
-  filter: grayscale(1);
-  transition: all 0.3s ease;
-}
-
-.upcoming-card:hover {
-  opacity: 1;
-  filter: grayscale(0);
-}
-
-.upcoming-content {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
+/* Date Box */
 .date-box {
-  width: 48px;
-  height: 48px;
-  background: #374151;
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary) 0%, #0d6ec9 100%);
+  border-radius: 12px;
+  color: white;
+  padding: 8px;
   flex-shrink: 0;
 }
 
-.date-month {
-  font-size: 12px;
-  font-weight: bold;
-  color: var(--text-primary);
-  text-transform: uppercase;
+.passenger-card .date-box {
+  background: linear-gradient(135deg, var(--passenger-color) 0%, #a855f7 100%);
 }
 
 .date-day {
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.upcoming-info {
+.date-month {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+/* Trip Info */
+.trip-info {
   flex: 1;
+  min-width: 0;
+}
+
+.trip-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background-color: var(--driver-bg);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--driver-color);
+  margin-bottom: 8px;
+}
+
+.passenger-card .trip-type-badge {
+  background-color: var(--passenger-bg);
+  color: var(--passenger-color);
+}
+
+.trip-type-badge ion-icon {
+  font-size: 0.9rem;
+}
+
+.trip-route {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 4px 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.trip-details {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.trip-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trip-passengers {
+  font-size: 0.85rem;
+  color: var(--success-color);
+  margin: 4px 0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .chevron-icon {
   color: var(--text-secondary);
-  font-size: 24px;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
-/* Floating Action Button */
+/* Trips List */
+.trips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* FAB Styles */
 .fab-container {
   position: fixed;
   bottom: 24px;
@@ -512,16 +366,79 @@
   --box-shadow: 0 8px 25px rgba(19, 127, 236, 0.3);
   font-weight: bold;
   font-size: 16px;
+  transition: transform 0.2s ease;
 }
 
 .create-trip-fab:hover {
   transform: scale(1.05);
-  transition: transform 0.2s ease;
 }
 
 /* Spacer */
 .spacer {
-  height: 100px;
+  height: 120px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .trip-counters {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .trip-counter {
+    min-width: 100%;
+    padding: 10px 16px;
+  }
+  
+  .trip-route {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 1;
+  }
+  
+  .date-box {
+    min-width: 50px;
+    height: 50px;
+  }
+  
+  .date-day {
+    font-size: 1.3rem;
+  }
+  
+  .date-month {
+    font-size: 0.7rem;
+  }
+  
+  .create-trip-fab {
+    min-width: 180px;
+    padding: 0 16px;
+    font-size: 0.9rem;
+    height: 50px;
+  }
+  
+  .trip-card-content {
+    gap: 12px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .date-box {
+    min-width: 45px;
+    height: 45px;
+  }
+  
+  .date-day {
+    font-size: 1.2rem;
+  }
+  
+  .trip-type-badge {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+  
+  .trip-details {
+    font-size: 0.8rem;
+  }
 }
 
 /* Scrollbar personalizado */
@@ -535,6 +452,52 @@
 }
 
 .my-trips-content::-webkit-scrollbar-thumb {
-  background: #374151;
+  background: var(--card-border);
   border-radius: 3px;
+}
+
+.my-trips-content::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}
+
+/* Animation for segment change */
+.trips-list {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Status badges for passenger trips */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-badge.pending {
+  background: rgba(249, 115, 22, 0.1);
+  color: var(--pending-color);
+}
+
+.status-badge.confirmed {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.status-badge ion-icon {
+  font-size: 0.8rem;
 }
