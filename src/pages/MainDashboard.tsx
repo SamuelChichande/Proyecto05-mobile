@@ -12,6 +12,7 @@ import TripDetails from '../components/TripDetails';
 import CreateTrip from './CreateTrip';
 import TripHistoryDetails from '../components/TripHistoryDetails';
 import ManageTrip from '../components/ManageTrip';
+import SearchTrips from './SearchTrips';
 
 function MainDashboard() {
   return (
@@ -27,6 +28,7 @@ function MainDashboard() {
         <Route exact path="/maindashboard/create-trip" component={CreateTrip} />
         <Route exact path="/maindashboard/trip-history-details" component={TripHistoryDetails} />
         <Route exact path="/maindashboard/manage-trip" component={ManageTrip} />
+        <Route exact path="/maindashboard/search" component={SearchTrips} />
         <Route exact path="/maindashboard">
           <Redirect to="/maindashboard/home" />
         </Route>

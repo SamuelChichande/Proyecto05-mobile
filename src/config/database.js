@@ -1,7 +1,7 @@
 "use strict";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-import { getDatabase, ref, set, push, get, child } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+import { getDatabase, ref, set, push, get, child, update } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
 
 const firebaseConfig = {
@@ -17,7 +17,6 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const saveUser = (name, address, password, rating, tripCount) => {
-
     const userRef = ref(database, "users/");
     const newUserRef = push(userRef);
 
@@ -28,9 +27,8 @@ const saveUser = (name, address, password, rating, tripCount) => {
         rating,
         tripCount
     })
-        .then(() => ({ status: "success", message: "User saved successfully." }))
-        .catch(error => ({ status: "error", message: error?.message || String(error) }));
-
+    .then(() => ({ status: "success", message: "User saved successfully." }))
+    .catch(error => ({ status: "error", message: error?.message || String(error) }));
 };
 
 let getUsers = async () => {
@@ -50,41 +48,21 @@ let getUsers = async () => {
 };
 
 let getUserById = async (userId) => {
-    // Validar que se proporcione un ID
     if (!userId || typeof userId !== 'string' || userId.trim() === '') {
-        return {
-            status: "error",
-            message: "Se requiere un ID de usuario válido"
-        };
+        return { status: "error", message: "Se requiere un ID de usuario válido" };
     }
-
     try {
         const dbRef = ref(getDatabase());
         const userPath = `users/${userId}`;
-        
         const snapshot = await get(child(dbRef, userPath));
-        
         if (snapshot.exists()) {
-            return {
-                status: "success",
-                data: {
-                    id: userId,
-                    ...snapshot.val()
-                }
-            };
+            return { status: "success", data: { id: userId, ...snapshot.val() } };
         } else {
-            return {
-                status: "not_found",
-                message: `Usuario con ID "${userId}" no encontrado`
-            };
+            return { status: "not_found", message: `Usuario con ID "${userId}" no encontrado` };
         }
     } catch (error) {
         console.error(`Error getting user ${userId}:`, error);
-        return {
-            status: "error",
-            message: error?.message || String(error),
-            code: error?.code || null
-        };
+        return { status: "error", message: error?.message || String(error), code: error?.code || null };
     }
 };
 
@@ -102,10 +80,10 @@ let saveTrip = async (origin, destination, date, time, timeTravel, seats, car, p
         car,
         price,
         userId,
-        passengersID
+        passengersID: passengersID || [] // Aseguramos que sea un array
     })
-        .then(() => ({ status: "success", message: "Trip saved successfully." }))
-        .catch(error => ({ status: "error", message: error?.message || String(error) }));
+    .then(() => ({ status: "success", message: "Trip saved successfully." }))
+    .catch(error => ({ status: "error", message: error?.message || String(error) }));
 }
 
 let getTrips = async () => {
@@ -124,4 +102,50 @@ let getTrips = async () => {
         });
 }
 
-export { saveUser, getUsers, getUserById, saveTrip, getTrips };
+let joinTrip = async (tripId, passengerId) => {
+    try {
+        const tripRef = ref(database, `trips/${tripId}`);
+        const snapshot = await get(tripRef);
+
+        if (snapshot.exists()) {
+            const trip = snapshot.val();
+            let passengers = trip.passengersID || [];
+            const totalSeats = parseInt(trip.seats);
+
+            if (passengers.length >= totalSeats) {
+                return { status: "error", message: "Lo sentimos, el viaje se llenó justo ahora." };
+            }
+
+            if (passengers.includes(passengerId)) {
+                return { status: "error", message: "Ya estás registrado en este viaje." };
+            }
+
+            passengers.push(passengerId);
+            
+            await update(tripRef, { passengersID: passengers });
+            
+            return { status: "success", message: "Reserva exitosa" };
+        } else {
+            return { status: "error", message: "El viaje no existe." };
+        }
+    } catch (error) {
+        return { status: "error", message: error?.message || String(error) };
+    }
+};
+
+let getTripById = async (tripId) => {
+    try {
+        const dbRef = ref(getDatabase());
+        const snapshot = await get(child(dbRef, `trips/${tripId}`));
+        
+        if (snapshot.exists()) {
+            return { status: "success", data: { id: tripId, ...snapshot.val() } };
+        } else {
+            return { status: "error", message: "Viaje no encontrado" };
+        }
+    } catch (error) {
+        return { status: "error", message: error?.message || String(error) };
+    }
+};
+
+export { saveUser, getUsers, getUserById, saveTrip, getTrips, joinTrip, getTripById};
