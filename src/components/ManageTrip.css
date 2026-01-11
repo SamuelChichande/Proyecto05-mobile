@@ -1,4 +1,3 @@
-/* Variables de color para modo oscuro */
 :root {
   --primary-color: #137fec;
   --primary-light: #137fec20;
@@ -13,7 +12,6 @@
   --warning-color: #ed8936;
 }
 
-/* Estilos generales */
 .header {
   --background: var(--background-dark);
   --border-color: var(--border-dark);
@@ -25,7 +23,6 @@
   letter-spacing: -0.5px;
 }
 
-/* Tarjeta del viaje */
 .tripCard {
   --background: var(--card-dark);
   border-radius: 24px;
@@ -163,7 +160,6 @@
   color: var(--text-main-dark);
 }
 
-/* Secciones */
 .section {
   margin-bottom: 24px;
 }
@@ -196,7 +192,6 @@
   margin: 0;
 }
 
-/* Pasajeros */
 .passengersList {
   display: flex;
   flex-direction: column;
@@ -359,7 +354,6 @@
   display: block;
 }
 
-/* Footer y navegación */
 .footer {
   --background: var(--card-dark);
   border-top: 1px solid var(--border-dark);
@@ -418,4 +412,21 @@
 
 .mainFab ion-fab-button:hover {
   transform: scale(1.05);
+}
+
+.cancelSection {
+    margin-top: 30px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center; 
+}
+
+.cancel-trip-btn {
+    --background: var(--ion-color-danger);
+    --color: white;
+    width: auto;        
+    min-width: 200px;     
+    height: 45px;
+    font-weight: 600;
+    --border-radius: 50px;
 }
