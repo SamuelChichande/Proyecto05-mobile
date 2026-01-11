@@ -1,0 +1,421 @@
+/* Variables de color para modo oscuro */
+:root {
+  --primary-color: #137fec;
+  --primary-light: #137fec20;
+  --background-dark: #101922;
+  --card-dark: #1c2127;
+  --text-main-dark: #ffffff;
+  --text-secondary-dark: #9dabb9;
+  --border-dark: #2d3748;
+  --border-light: #4a5568;
+  --danger-color: #f56565;
+  --success-color: #48bb78;
+  --warning-color: #ed8936;
+}
+
+/* Estilos generales */
+.header {
+  --background: var(--background-dark);
+  --border-color: var(--border-dark);
+  --color: var(--text-main-dark);
+}
+
+.title {
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Tarjeta del viaje */
+.tripCard {
+  --background: var(--card-dark);
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-dark);
+}
+
+.tripHeaderImage {
+  height: 160px;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent, var(--card-dark));
+}
+
+.tripStatusContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  margin-top: -10px;
+}
+
+.statusChip {
+  --background: var(--primary-color);
+  --color: white;
+  font-weight: 700;
+  font-size: 12px;
+  box-shadow: 0 4px 12px rgba(19, 127, 236, 0.3);
+  padding: 6px 16px;
+}
+
+.pulseDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.timeChip {
+  --background: var(--card-dark);
+  --color: var(--primary-color);
+  border: 1px solid var(--border-dark);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Ruta */
+.routeContainer {
+  display: flex;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.routeLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.routeDotStart {
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(19, 127, 236, 0.2);
+}
+
+.routeLineMiddle {
+  width: 2px;
+  height: 40px;
+  background-color: var(--border-light);
+  margin: 4px 0;
+}
+
+.routeDotEnd {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  background-color: var(--card-dark);
+}
+
+.routeDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.routePoint {
+  display: flex;
+  flex-direction: column;
+}
+
+.routeLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary-dark);
+  margin-bottom: 4px;
+}
+
+.routeAddress {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-main-dark);
+}
+
+/* Secciones */
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main-dark);
+  padding: 0;
+  margin: 0;
+}
+
+.sectionSubtitle {
+  font-weight: 500;
+  color: var(--text-secondary-dark);
+}
+
+.viewAllButton {
+  --color: var(--primary-color);
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Pasajeros */
+.passengersList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.passengerCard {
+  --background: var(--card-dark);
+  border-radius: 16px;
+  border: 1px solid var(--border-dark);
+  margin: 0;
+}
+
+.passengerContent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.passengerAvatarContainer {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.passengerAvatar {
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--primary-color);
+}
+
+.driverBadge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--card-dark);
+}
+
+.driverBadge ion-icon {
+  font-size: 10px;
+  color: white;
+}
+
+.passengerInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.passengerNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.passengerName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main-dark);
+  margin: 0;
+}
+
+.ratingBadge {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background-color: rgba(237, 137, 54, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.starIcon {
+  font-size: 12px;
+  color: var(--warning-color);
+}
+
+.carInfo {
+  font-size: 12px;
+  color: var(--text-secondary-dark);
+  margin: 0;
+}
+
+.moreButton {
+  --color: var(--text-secondary-dark);
+  margin: 0;
+  width: 36px;
+  height: 36px;
+}
+
+.passengerStatus {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.driverStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(19, 127, 236, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(19, 127, 236, 0.2);
+  width: fit-content;
+}
+
+.driverStatus ion-icon {
+  font-size: 14px;
+}
+
+.driverStatus ion-note {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.riderStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(160, 174, 192, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(160, 174, 192, 0.2);
+  width: fit-content;
+}
+
+.riderStatus ion-icon {
+  font-size: 14px;
+}
+
+.riderStatus ion-note {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Cancelar */
+.cancelSection {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.cancelButton {
+  --color: var(--danger-color);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.cancelNote {
+  font-size: 11px;
+  color: var(--text-secondary-dark);
+  max-width: 240px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Footer y navegación */
+.footer {
+  --background: var(--card-dark);
+  border-top: 1px solid var(--border-dark);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottomNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  position: relative;
+  height: 64px;
+}
+
+.navButton {
+  --color: var(--text-secondary-dark);
+  flex-direction: column;
+  font-size: 10px;
+  font-weight: 500;
+  width: auto;
+  height: auto;
+  margin: 0;
+  min-height: 48px;
+}
+
+.navButton ion-label {
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.activeNav {
+  --color: var(--primary-color);
+  font-weight: 700;
+}
+
+.fabContainer {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+
+.mainFab {
+  position: absolute;
+  top: -28px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.mainFab ion-fab-button {
+  width: 56px;
+  height: 56px;
+  --box-shadow: 0 4px 12px rgba(19, 127, 236, 0.4);
+}
+
+.mainFab ion-fab-button:hover {
+  transform: scale(1.05);
+}

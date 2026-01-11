@@ -64,6 +64,8 @@ const RideCard = ({ trip, tripType = 'passenger' }: RideCardProps) => {
             isDriver: isDriverTrip
         };
         //router.push('/maindashboard/trip-details', 'forward', 'push', state);
+        //router.push('/maindashboard/trip-details', 'forward', 'push');
+        router.push('/maindashboard/manage-trip', 'forward', 'push');
     };
 
     return (

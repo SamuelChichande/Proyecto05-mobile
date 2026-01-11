@@ -10,7 +10,6 @@ import { getTrips } from '../config/database';
 
 import './HomePage.css';
 import RideCard from '../components/RideCard';
-import QuickActions from '../components/QuickActions';
 
 interface Trip {
     id: string;
@@ -382,9 +381,6 @@ const HomePage: React.FC = () => {
                     
                     {/* Mostrar viajes según el segmento activo */}
                     {renderTrips(getActiveTrips(), activeSegment)}
-                    
-                    <h3>Accesos Rápidos</h3>
-                    <QuickActions />
                 </div>
             </IonContent>
         </IonPage>
