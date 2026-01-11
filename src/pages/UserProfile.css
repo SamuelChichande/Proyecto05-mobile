@@ -39,7 +39,7 @@
 }
 
 .stat-card {
-  background: var(--ion-item-background, #fff);
+  background: #1C2630;
   padding: 16px;
   border-radius: 16px;
   display: flex;
@@ -124,6 +124,12 @@
   margin-bottom: 20px !important;
 }
 
+.custom-list ion-item {
+    --background: #1C2630;
+    --border-radius: 10px;
+    margin: 8px 0;
+}
+
 .footer-actions {
   margin-top: 30px;
   padding-bottom: 40px;
@@ -134,7 +140,7 @@
 
 .logout-btn {
   /* Eliminamos el ancho 100% y definimos uno fijo o basado en contenido */
-  width: 160px; 
+  width: 220px; 
   font-weight: 700;
   --color: #eb445a;
   --background: rgba(235, 68, 90, 0.1); /* Opcional: un fondo suave */

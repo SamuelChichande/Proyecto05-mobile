@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     IonPage, IonContent, IonHeader, IonToolbar, IonTitle,
     IonButton, IonIcon, IonLabel, IonAvatar, IonBadge,
@@ -10,6 +10,8 @@ import {
     closeCircleOutline, personOutline, ellipsisHorizontal
 } from 'ionicons/icons';
 import { useLocation } from 'react-router-dom';
+// @ts-ignore
+import { getUserById, deleteTrip } from '../config/database';
 import './ManageTrip.css';
 
 const ManageTrip: React.FC = () => {
@@ -28,15 +30,66 @@ const ManageTrip: React.FC = () => {
     const originDisplay = tripData.origin || tripData.startPoint;
     const destDisplay = tripData.destination || tripData.endPoint;
     const timeDisplay = tripData.time || tripData.timeTravel;
-
     const passengersCount = tripData.passengersID ? tripData.passengersID.length : 0;
-    const passengers = [
+    const tripId = tripData.id || 'unknown';
+    const userId = localStorage.getItem('idUser') || '1';
+
+    const [passengers, setPassengers] = useState<any[]>([
         {
-            id: 1, name: 'Tú (Conductor)', role: 'Conductor', rating: 5.0,
-            car: tripData.car || tripData.vehicle || 'Vehículo', image: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
-            status: 'confirmed', isDriver: true,
+            id: userId,
+            name: 'Tú (Conductor)',
+            role: 'Conductor',
+            rating: tripData?.rating || 0.0,
+            image: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+            isDriver: true,
         }
-    ];
+    ]);
+
+    useEffect(() => {
+        const loadPassengerData = async () => {
+            if (!tripData?.passengersID) return;
+
+            const updatedPassengers = [...passengers]; // Copia del conductor inicial
+            
+            for (let i = 0; i < tripData.passengersID.length; i++) {
+                const pid = tripData.passengersID[i];
+                try {
+                    const res = await getUserById(pid);
+                    if (res.status === 'success') {
+                        const pInfo = res.data;
+                        updatedPassengers.push({
+                            id: pid,
+                            name: pInfo.name || `Pasajero ${i + 1}`,
+                            role: 'Pasajero',
+                            rating: pInfo.rating || null,
+                            image: 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                            isDriver: false,
+                        });
+                    } else {
+                        console.error("Error loading passenger data for ID:", pid);
+                    }
+                } catch (error) {
+                    console.error("Exception loading passenger data for ID:", pid, error);
+                }
+            }
+            
+            setPassengers(updatedPassengers);
+        };
+
+        loadPassengerData();
+    }, [tripData]);
+
+    const handleCancelTrip = () => {
+        try {
+            deleteTrip(tripId);
+            alert("Viaje cancelado exitosamente.");
+            window.dispatchEvent(new Event('trip-cancelled'));
+            window.location.href = '/maindashboard/home';
+        } catch (error) {
+            console.error("Error cancelando el viaje:", error);
+            alert("Error al cancelar el viaje. Intenta nuevamente.");
+        }
+    }
 
     return (
         <IonPage>
@@ -95,8 +148,8 @@ const ManageTrip: React.FC = () => {
                                                 {passenger.rating && <div className="ratingBadge"><IonBadge color="warning">{passenger.rating}</IonBadge><IonIcon icon={star} className="starIcon" /></div>}
                                             </div>
                                             <div className="passengerStatus">
-                                                {passenger.isDriver ? 
-                                                    <div className="driverStatus"><IonIcon icon={carOutline} color="primary" /><IonNote color="primary">Conductor</IonNote></div> : 
+                                                {passenger.isDriver ?
+                                                    <div className="driverStatus"><IonIcon icon={carOutline} color="primary" /><IonNote color="primary">Conductor</IonNote></div> :
                                                     <div className="riderStatus"><IonIcon icon={personOutline} color="medium" /><IonNote color="medium">Pasajero</IonNote></div>
                                                 }
                                             </div>
@@ -109,11 +162,12 @@ const ManageTrip: React.FC = () => {
                 </div>
 
                 <div className="cancelSection">
-                    <IonButton 
-                        fill="solid" 
-                        color="danger" 
+                    <IonButton
+                        fill="solid"
+                        color="danger"
                         shape="round"
                         className="cancel-trip-btn"
+                        onClick={handleCancelTrip}
                     >
                         <IonIcon slot="start" icon={closeCircleOutline} />
                         Cancelar este viaje

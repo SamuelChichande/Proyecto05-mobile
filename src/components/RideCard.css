@@ -23,6 +23,7 @@
 .rideCardTimeBadge {
     background: var(--ion-color-primary);
     color: white;
+    margin-top: 20px;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 13px;

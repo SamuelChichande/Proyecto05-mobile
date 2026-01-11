@@ -56,6 +56,7 @@ const Login: React.FC = () => {
                         const user = users[userId];
                         if (user.address === email && user.password === password) {
                             localStorage.setItem('idUser', userId);
+                            localStorage.setItem('rating', user.rating || "0.0");
                             break;
                         }
                     }

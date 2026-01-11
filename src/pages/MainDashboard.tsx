@@ -3,7 +3,7 @@ import { IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet } 
 
 import { Route, Redirect } from 'react-router';
 
-import { homeSharp, carSharp, personSharp } from 'ionicons/icons';
+import { homeSharp, carSharp, personSharp, searchSharp } from 'ionicons/icons';
 
 import HomePage from './HomePage';
 import UserProfile from './UserProfile';
@@ -22,13 +22,13 @@ function MainDashboard() {
 
         <Route exact path="/maindashboard/home" component={HomePage} />
         <Route exact path="/maindashboard/trips" component={MyTravels} />
+        <Route exact path="/maindashboard/search" component={SearchTrips} />
         <Route exact path="/maindashboard/profile" component={UserProfile} />
 
         <Route exact path="/maindashboard/trip-details" component={TripDetails} />
         <Route exact path="/maindashboard/create-trip" component={CreateTrip} />
         <Route exact path="/maindashboard/trip-history-details" component={TripHistoryDetails} />
         <Route exact path="/maindashboard/manage-trip" component={ManageTrip} />
-        <Route exact path="/maindashboard/search" component={SearchTrips} />
         <Route exact path="/maindashboard">
           <Redirect to="/maindashboard/home" />
         </Route>
@@ -43,6 +43,11 @@ function MainDashboard() {
         <IonTabButton tab="trips" href="/maindashboard/trips">
           <IonIcon icon={carSharp} />
           <IonLabel>Mis viajes</IonLabel>
+        </IonTabButton>
+
+        <IonTabButton tab="search" href="/maindashboard/search">
+          <IonIcon icon={searchSharp} />
+          <IonLabel>Buscar viajes</IonLabel>
         </IonTabButton>
 
         <IonTabButton tab="profile" href="/maindashboard/profile">
