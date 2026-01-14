@@ -10,13 +10,6 @@
   --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos generales */
-.create-trip-content {
-  --background: var(--background-dark);
-  color: var(--text-primary);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
 /* Toolbar personalizado */
 .create-trip-toolbar {
   --background: var(--background-dark);
@@ -132,11 +125,78 @@
 }
 
 .autocomplete-list {
-  position: relative;
+  position: absolute;
+  left: 16px;
+  right: 16px;
   z-index: 1000;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background: #1a202c;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2d3748;
+  max-height: 280px;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.2s ease;
+}
+
+.autocomplete-list ion-item {
+  --background: transparent;
+  --background-hover: #2d3748;
+  --background-activated: #4a5568;
+  --color: #e2e8f0;
+  --color-hover: #ffffff;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 48px;
+  font-size: 14px;
+  --inner-border-width: 0;
+  --border-color: #2d3748;
+}
+
+.autocomplete-list ion-item::part(native) {
+  border-bottom: 1px solid #2d3748;
+}
+
+.autocomplete-list ion-item:last-child::part(native) {
+  border-bottom: none;
+}
+
+/* Indicador de selección */
+.autocomplete-list ion-item:hover {
+  --border-color: #4299e1;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Scrollbar oscuro */
+.autocomplete-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.autocomplete-list::-webkit-scrollbar-track {
+  background: #2d3748;
+  border-radius: 10px;
+  margin: 4px;
+}
+
+.autocomplete-list::-webkit-scrollbar-thumb {
+  background: #4a5568;
+  border-radius: 10px;
+}
+
+.autocomplete-list::-webkit-scrollbar-thumb:hover {
+  background: #718096;
 }
 
 /* Grid de fecha y hora */

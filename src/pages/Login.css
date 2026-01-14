@@ -6,6 +6,23 @@ ion-content::part(scroll) {
   color: #fff;
 }
 
+.image-background {
+  background-image: 
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 40%,
+      #101922 70%,
+      #101922 100%
+    ),
+    url('https://lh3.googleusercontent.com/aida-public/AB6AXuBjIUGZFomBzhKrQ3u7SoMbpol-N5V33cIYdXEeLwlHUW0kPnx6ZdltlsX0PL5aOCS0E_zDuvb9-dYiLl-kNUy_QyMJQj8iob56FgIu-E6fYKZs9pN5JHK7MpkQAMTpLRZjUbHVJtW3uOVKwfsrZKgEA3WSCX-xjH7QRZJZSWKPBcxjbzwm6wKmvFBuIhukQBYMFATqJdrW-oq1SUwEFk9hJqPBYy3rcxm8za16xw4RkpJ_kql4w7e_V_kVPgKg7yIRzUumYwHWM_5A');
+  background-size: 100% 60%;
+  background-position: top;
+  background-repeat: no-repeat;
+  position: relative;
+  height: 100%;
+}
+
 .icon-bordered {
   color: #4B76F4;
   border-radius: 38%;
@@ -21,7 +38,6 @@ ion-content::part(scroll) {
   justify-content: center;
   align-items: center;
   height: 100%;
-  /*text-align: center;*/
 }
 
 .custom-card {
@@ -35,6 +51,10 @@ ion-content::part(scroll) {
   border-radius: 24px;
   padding: 0.3em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-segment ion-segment-button::part(indicator) {
+  display: none;
 }
 
 .segment-btn {
@@ -55,24 +75,6 @@ ion-content::part(scroll) {
   background: #1E293B;
   color: white;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .login-container {
   display: flex;
@@ -134,5 +136,3 @@ ion-content::part(scroll) {
   font-weight: 500;
   text-transform: none;
 }
-
-
