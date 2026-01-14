@@ -177,30 +177,32 @@ const Login: React.FC = () => {
     );
 
     return (
-        <IonContent className="ion-padding">
-            <div className="centered-content">
-                <IonIcon icon={schoolSharp} className="icon-bordered"></IonIcon>
-                <IonText>
-                    <h2><strong>CarpoolConnect</strong></h2>
-                    <sub>Conecta con tu comunidad Politecnica</sub>
-                </IonText>
-                <IonCard className="custom-card">
-                    <IonCardHeader className="ion-text-center">
-                        <IonSegment value={selectedSegment} class="custom-segment" swipeGesture={true} onIonChange={handleSegmentChange}>
-                            <IonSegmentButton value="default" class="segment-btn">
-                                <IonLabel>Ingresar</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="segment2" class="segment-btn">
-                                <IonLabel>Registro</IonLabel>
-                            </IonSegmentButton>
-                        </IonSegment>
-                    </IonCardHeader>
+        <IonContent scrollEvents={true} scrollY={true}>
+            <div className="image-background">
+                <div className="centered-content">
+                    <IonIcon icon={schoolSharp} className="icon-bordered"></IonIcon>
+                    <IonText>
+                        <h2><strong>CarpoolConnect</strong></h2>
+                        <sub>Conecta con tu comunidad Politecnica</sub>
+                    </IonText>
+                    <IonCard className="custom-card">
+                        <IonCardHeader>
+                            <IonSegment value={selectedSegment} class="custom-segment" swipeGesture={true} onIonChange={handleSegmentChange}>
+                                <IonSegmentButton value="default" class="segment-btn">
+                                    <IonLabel>Ingresar</IonLabel>
+                                </IonSegmentButton>
+                                <IonSegmentButton value="segment2" class="segment-btn">
+                                    <IonLabel>Registro</IonLabel>
+                                </IonSegmentButton>
+                            </IonSegment>
+                        </IonCardHeader>
 
-                    <IonCardContent>
-                        {selectedSegment === 'default' ? loginForm : registerForm}
-                    </IonCardContent>
+                        <IonCardContent>
+                            {selectedSegment === 'default' ? loginForm : registerForm}
+                        </IonCardContent>
 
-                </IonCard>
+                    </IonCard>
+                </div>
             </div>
         </IonContent>
     );
